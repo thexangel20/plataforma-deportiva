@@ -1,200 +1,94 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Sports Info | Plataforma Deportiva</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
 
-<body>
-
+  <body>
     <!-- ENCABEZADO -->
     <header class="header">
+      <div class="contenedor">
+        <a href="/" class="logo"> SportsInfo </a>
 
-        <div class="contenedor">
-
-            <a href="/" class="logo">
-                SportsInfo
-            </a>
-
-            <nav class="navegacion">
-                <a href="/">Inicio</a>
-                <a href="#deportes">Deportes</a>
-                <a href="#sobre-nosotros">Sobre nosotros</a>
-            </nav>
-
-        </div>
-
+        <nav class="navegacion">
+          <a href="/">Inicio</a>
+          <a href="#deportes">Deportes</a>
+          <a href="#sobre-nosotros">Sobre nosotros</a>
+        </nav>
+      </div>
     </header>
-
 
     <!-- CONTENIDO PRINCIPAL -->
     <main>
+      <!-- PRESENTACIÓN -->
+      <section class="hero">
+        <div class="contenedor">
+          <h1>Descubre tu deporte ideal</h1>
 
-        <!-- PRESENTACIÓN -->
-        <section class="hero">
+          <p>
+            Encuentra información sobre diferentes deportes, sus costos,
+            duración, equipamiento, alimentación y recomendaciones.
+          </p>
 
-            <div class="contenedor">
+          <a href="#deportes" class="boton"> Explorar deportes </a>
+        </div>
+      </section>
 
-                <h1>Descubre tu deporte ideal</h1>
+      <!-- DEPORTES -->
+      <section id="deportes" class="seccion-deportes">
+        <div class="contenedor">
+          <h2>Deportes destacados</h2>
 
-                <p>
-                    Encuentra información sobre diferentes deportes,
-                    sus costos, duración, equipamiento, alimentación
-                    y recomendaciones.
-                </p>
+          <p class="descripcion-seccion">
+            Conoce las características de diferentes disciplinas deportivas.
+          </p>
 
-                <a href="#deportes" class="boton">
-                    Explorar deportes
-                </a>
+          <div class="tarjetas-deportes">
+            {% for deporte in deportes %}
 
-            </div>
+            <article class="tarjeta-deporte">
+              <div class="icono-deporte">⚽</div>
 
-        </section>
+              <h3>{{ deporte["nombre"] }}</h3>
 
+              <p>Costo estimado: {{ deporte["costo"] }}</p>
 
-        <!-- DEPORTES -->
-        <section id="deportes" class="seccion-deportes">
+              <p>Tiempo recomendado: {{ deporte["tiempo"] }}</p>
 
-            <div class="contenedor">
+              <a href="#" class="enlace-tarjeta"> Ver información </a>
+            </article>
 
-                <h2>Deportes destacados</h2>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
 
-                <p class="descripcion-seccion">
-                    Conoce las características de diferentes disciplinas
-                    deportivas.
-                </p>
+      <!-- SOBRE NOSOTROS -->
+      <section id="sobre-nosotros" class="sobre-nosotros">
+        <div class="contenedor">
+          <h2>Sobre SportsInfo</h2>
 
-
-                <div class="tarjetas-deportes">
-
-                    <!-- FÚTBOL -->
-                    <article class="tarjeta-deporte">
-
-                        <div class="icono-deporte">
-                            ⚽
-                        </div>
-
-                        <h3>Fútbol</h3>
-
-                        <p>
-                            Conoce el costo, tiempo de entrenamiento,
-                            equipamiento y recomendaciones.
-                        </p>
-
-                        <a href="#" class="enlace-tarjeta">
-                            Ver información
-                        </a>
-
-                    </article>
-
-
-                    <!-- BALONCESTO -->
-                    <article class="tarjeta-deporte">
-
-                        <div class="icono-deporte">
-                            🏀
-                        </div>
-
-                        <h3>Baloncesto</h3>
-
-                        <p>
-                            Descubre información útil para comenzar
-                            a practicar este deporte.
-                        </p>
-
-                        <a href="#" class="enlace-tarjeta">
-                            Ver información
-                        </a>
-
-                    </article>
-
-
-                    <!-- NATACIÓN -->
-                    <article class="tarjeta-deporte">
-
-                        <div class="icono-deporte">
-                            🏊
-                        </div>
-
-                        <h3>Natación</h3>
-
-                        <p>
-                            Conoce sus características, beneficios,
-                            costos y recomendaciones.
-                        </p>
-
-                        <a href="#" class="enlace-tarjeta">
-                            Ver información
-                        </a>
-
-                    </article>
-
-
-                    <!-- TENIS -->
-                    <article class="tarjeta-deporte">
-
-                        <div class="icono-deporte">
-                            🎾
-                        </div>
-
-                        <h3>Tenis</h3>
-
-                        <p>
-                            Información sobre equipamiento, duración
-                            y nivel de dificultad.
-                        </p>
-
-                        <a href="#" class="enlace-tarjeta">
-                            Ver información
-                        </a>
-
-                    </article>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- SOBRE NOSOTROS -->
-        <section id="sobre-nosotros" class="sobre-nosotros">
-
-            <div class="contenedor">
-
-                <h2>Sobre SportsInfo</h2>
-
-                <p>
-                    SportsInfo es una plataforma diseñada para facilitar
-                    la consulta de información relacionada con diferentes
-                    disciplinas deportivas.
-                </p>
-
-            </div>
-
-        </section>
-
+          <p>
+            SportsInfo es una plataforma diseñada para facilitar la consulta de
+            información relacionada con diferentes disciplinas deportivas.
+          </p>
+        </div>
+      </section>
     </main>
-
 
     <!-- PIE DE PÁGINA -->
     <footer class="footer">
-
-        <div class="contenedor">
-
-            <p>
-                © 2026 SportsInfo - Proyecto de Sistemas de Información 2
-            </p>
-
-        </div>
-
+      <div class="contenedor">
+        <p>© 2026 SportsInfo - Proyecto de Sistemas de Información 2</p>
+      </div>
     </footer>
-
-</body>
-
+  </body>
 </html>
