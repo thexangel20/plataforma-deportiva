@@ -6,25 +6,25 @@ from app import app
 deportes = [
     {
         "nombre": "Fútbol",
-        "imagen": "futbol.jpg",
-        "costo": "Bs. 150",
+        "imagen": "futbol.png",
+        "costo": "Bs. 100",
         "tiempo": "90 minutos"
     },
     {
         "nombre": "Baloncesto",
-        "imagen": "baloncesto.jpg",
+        "imagen": "baloncesto.png",
         "costo": "Bs. 120",
         "tiempo": "90 minutos"
     },
     {
         "nombre": "Natación",
-        "imagen": "natacion.jpg",
+        "imagen": "natacion.png",
         "costo": "Bs. 200",
         "tiempo": "60 minutos"
     },
     {
         "nombre": "Tenis",
-        "imagen": "tenis.jpg",
+        "imagen": "tenis.png",
         "costo": "Bs. 300",
         "tiempo": "120 minutos"
     }

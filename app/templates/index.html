@@ -55,8 +55,12 @@
             {% for deporte in deportes %}
 
             <article class="tarjeta-deporte">
-              <div class="icono-deporte">⚽</div>
-
+              <div class="imagen-deporte">
+                <img
+                  src="{{ url_for('static', filename='images/' + deporte['imagen']) }}"
+                  alt="{{ deporte['nombre'] }}"
+                />
+              </div>
               <h3>{{ deporte["nombre"] }}</h3>
 
               <p>Costo estimado: {{ deporte["costo"] }}</p>

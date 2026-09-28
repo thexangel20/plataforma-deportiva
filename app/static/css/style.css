@@ -11,6 +11,7 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     color: #1f2937;
     background-color: #f5f7fa;
+    overflow-x: hidden;
 }
 
 .contenedor {
@@ -127,7 +128,7 @@ body {
 
 .tarjetas-deportes {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 25px;
 }
 
@@ -137,6 +138,21 @@ body {
     border: 1px solid #e5e7eb;
     border-radius: 10px;
     text-align: center;
+}
+
+.imagen-deporte {
+    width: 100%;
+    height: 180px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.imagen-deporte img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .icono-deporte {
@@ -239,5 +255,9 @@ body {
 
     .tarjetas-deportes {
         grid-template-columns: 1fr;
+    }
+
+    .imagen-deporte {
+    height: 160px;
     }
 }
