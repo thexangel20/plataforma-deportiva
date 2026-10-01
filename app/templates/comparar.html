@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparar deportes | SportsInfo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <header class="header">
+        <div class="contenedor">
+            <a href="{{ url_for('inicio') }}" class="logo">SportsInfo</a>
+            <nav class="navegacion" aria-label="Navegación principal">
+                <a href="{{ url_for('inicio') }}">Inicio</a>
+                <a href="{{ url_for('inicio') }}#deportes">Deportes</a>
+                <a href="{{ url_for('comparar') }}" aria-current="page">Comparar</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="pagina-comparacion">
+        <div class="contenedor">
+            <a href="{{ url_for('inicio') }}#deportes" class="volver">← Volver al catálogo</a>
+            <h1>Comparar deportes</h1>
+            <p class="descripcion-seccion">
+                Revisa sus características principales en una sola vista.
+            </p>
+
+            {% if error %}
+            <div class="estado estado-error" role="alert">
+                <strong>No se puede realizar la comparación.</strong>
+                <p>{{ error }}</p>
+                <a href="{{ url_for('inicio') }}#deportes" class="boton">Seleccionar deportes</a>
+            </div>
+            {% else %}
+            <div class="tabla-contenedor">
+                <table class="tabla-comparacion">
+                    <caption class="sr-only">Comparación de características de deportes</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Característica</th>
+                            {% for deporte in deportes %}
+                            <th scope="col" class="encabezado-deporte">
+                                <span class="icono-comparacion">{{ deporte.icono }}</span>
+                                <span>{{ deporte.nombre }}</span>
+                                <form method="get" action="{{ url_for('comparar') }}" class="form-quitar">
+                                    {% for otro in deportes if otro.id != deporte.id %}
+                                    <input type="hidden" name="ids" value="{{ otro.id }}">
+                                    {% endfor %}
+                                    <button type="submit" class="boton-quitar" aria-label="Quitar {{ deporte.nombre }} de la comparación">
+                                        Quitar
+                                    </button>
+                                </form>
+                            </th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Objetivo</th>
+                            {% for deporte in deportes %}<td>{{ deporte.objetivo }}</td>{% endfor %}
+                        </tr>
+                        <tr>
+                            <th scope="row">Costo estimado</th>
+                            {% for deporte in deportes %}<td>{{ deporte.moneda }} {{ "%.2f"|format(deporte.costo|float) }}</td>{% endfor %}
+                        </tr>
+                        <tr>
+                            <th scope="row">Duración</th>
+                            {% for deporte in deportes %}<td>{{ deporte.duracion_minutos }} minutos</td>{% endfor %}
+                        </tr>
+                        <tr>
+                            <th scope="row">Equipamiento</th>
+                            {% for deporte in deportes %}
+                            <td>
+                                <ul class="lista-comparacion">
+                                    {% for item in deporte.equipamiento %}<li>{{ item }}</li>{% endfor %}
+                                </ul>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <th scope="row">Recomendaciones</th>
+                            {% for deporte in deportes %}
+                            <td>
+                                <ul class="lista-comparacion">
+                                    {% for item in deporte.recomendaciones %}<li>{{ item }}</li>{% endfor %}
+                                </ul>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="contenedor">
+            <p>© 2026 SportsInfo - Proyecto de Sistemas de Información 2</p>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -15,6 +15,33 @@ Plataforma web para consultar información sobre diferentes deportes.
 El sistema permitirá consultar información relacionada con diferentes deportes,
 incluyendo costos, duración, equipamiento, alimentación y recomendaciones.
 
+## HU21: Comparar deportes
+
+La aplicación permite seleccionar dos o más deportes desde el catálogo y
+compararlos en `/comparar`, mostrando objetivo, costo, duración, equipamiento y
+recomendaciones. También permite quitar deportes de la comparación.
+
+### Ejecución local
+
+```bash
+python -m venv .venv
+.venv\\Scripts\\activate
+pip install -r requirements.txt
+python run.py
+```
+
+Sin variables de Supabase se muestran datos locales de demostración. Para usar
+PostgreSQL mediante Supabase, ejecuta `pip install -r requirements-supabase.txt`, copia
+`.env.example` como `.env`, completa las variables y ejecuta
+`supabase/schema.sql` en el SQL Editor de Supabase.
+
+### Pruebas
+
+```bash
+pip install -r requirements-dev.txt
+python -m unittest discover -s tests -v
+```
+
 ## Autores
 
 Proyecto académico - Sistemas de Información 2

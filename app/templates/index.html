@@ -4,199 +4,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Sports Info | Plataforma Deportiva</title>
-
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
-
-    <!-- ENCABEZADO -->
     <header class="header">
-
         <div class="contenedor">
-
-            <a href="/" class="logo">
-                SportsInfo
-            </a>
-
-            <nav class="navegacion">
-                <a href="/">Inicio</a>
+            <a href="{{ url_for('inicio') }}" class="logo">SportsInfo</a>
+            <nav class="navegacion" aria-label="Navegación principal">
+                <a href="{{ url_for('inicio') }}">Inicio</a>
                 <a href="#deportes">Deportes</a>
                 <a href="#sobre-nosotros">Sobre nosotros</a>
             </nav>
-
         </div>
-
     </header>
 
-
-    <!-- CONTENIDO PRINCIPAL -->
     <main>
-
-        <!-- PRESENTACIÓN -->
         <section class="hero">
-
             <div class="contenedor">
-
                 <h1>Descubre tu deporte ideal</h1>
-
                 <p>
-                    Encuentra información sobre diferentes deportes,
-                    sus costos, duración, equipamiento, alimentación
-                    y recomendaciones.
+                    Encuentra información sobre diferentes deportes, sus costos,
+                    duración, equipamiento, alimentación y recomendaciones.
                 </p>
-
-                <a href="#deportes" class="boton">
-                    Explorar deportes
-                </a>
-
+                <a href="#deportes" class="boton">Explorar deportes</a>
             </div>
-
         </section>
 
-
-        <!-- DEPORTES -->
         <section id="deportes" class="seccion-deportes">
-
             <div class="contenedor">
-
                 <h2>Deportes destacados</h2>
-
                 <p class="descripcion-seccion">
-                    Conoce las características de diferentes disciplinas
-                    deportivas.
+                    Selecciona dos o más deportes para comparar sus características.
                 </p>
 
-
-                <div class="tarjetas-deportes">
-
-                    <!-- FÚTBOL -->
-                    <article class="tarjeta-deporte">
-
-                        <div class="icono-deporte">
-                            ⚽
+                {% if error %}
+                <div class="estado estado-error" role="alert">{{ error }}</div>
+                {% elif deportes %}
+                <form action="{{ url_for('comparar') }}" method="get" data-comparison-form>
+                    <div class="barra-comparacion">
+                        <div>
+                            <strong>Comparación</strong>
+                            <span data-comparison-count>0 seleccionados</span>
                         </div>
+                        <button type="submit" class="boton" data-comparison-submit>
+                            Comparar seleccionados
+                        </button>
+                    </div>
 
-                        <h3>Fútbol</h3>
-
-                        <p>
-                            Conoce el costo, tiempo de entrenamiento,
-                            equipamiento y recomendaciones.
-                        </p>
-
-                        <a href="#" class="enlace-tarjeta">
-                            Ver información
-                        </a>
-
-                    </article>
-
-
-                    <!-- BALONCESTO -->
-                    <article class="tarjeta-deporte">
-
-                        <div class="icono-deporte">
-                            🏀
-                        </div>
-
-                        <h3>Baloncesto</h3>
-
-                        <p>
-                            Descubre información útil para comenzar
-                            a practicar este deporte.
-                        </p>
-
-                        <a href="#" class="enlace-tarjeta">
-                            Ver información
-                        </a>
-
-                    </article>
-
-
-                    <!-- NATACIÓN -->
-                    <article class="tarjeta-deporte">
-
-                        <div class="icono-deporte">
-                            🏊
-                        </div>
-
-                        <h3>Natación</h3>
-
-                        <p>
-                            Conoce sus características, beneficios,
-                            costos y recomendaciones.
-                        </p>
-
-                        <a href="#" class="enlace-tarjeta">
-                            Ver información
-                        </a>
-
-                    </article>
-
-
-                    <!-- TENIS -->
-                    <article class="tarjeta-deporte">
-
-                        <div class="icono-deporte">
-                            🎾
-                        </div>
-
-                        <h3>Tenis</h3>
-
-                        <p>
-                            Información sobre equipamiento, duración
-                            y nivel de dificultad.
-                        </p>
-
-                        <a href="#" class="enlace-tarjeta">
-                            Ver información
-                        </a>
-
-                    </article>
-
-                </div>
-
+                    <div class="tarjetas-deportes">
+                        {% for deporte in deportes %}
+                        <article class="tarjeta-deporte">
+                            <label class="selector-deporte" for="comparar-{{ deporte.id }}">
+                                <input id="comparar-{{ deporte.id }}" type="checkbox" name="ids" value="{{ deporte.id }}">
+                                <span>Seleccionar para comparar</span>
+                            </label>
+                            <div class="icono-deporte" aria-hidden="true">{{ deporte.icono }}</div>
+                            <h3>{{ deporte.nombre }}</h3>
+                            <p>{{ deporte.descripcion }}</p>
+                            <div class="resumen-deporte">
+                                <span><strong>Costo:</strong> {{ deporte.moneda }} {{ "%.2f"|format(deporte.costo|float) }}</span>
+                                <span><strong>Duración:</strong> {{ deporte.duracion_minutos }} min</span>
+                            </div>
+                        </article>
+                        {% endfor %}
+                    </div>
+                </form>
+                {% else %}
+                <div class="estado">No hay deportes disponibles en este momento.</div>
+                {% endif %}
             </div>
-
         </section>
 
-
-        <!-- SOBRE NOSOTROS -->
         <section id="sobre-nosotros" class="sobre-nosotros">
-
             <div class="contenedor">
-
                 <h2>Sobre SportsInfo</h2>
-
                 <p>
-                    SportsInfo es una plataforma diseñada para facilitar
-                    la consulta de información relacionada con diferentes
-                    disciplinas deportivas.
+                    SportsInfo es una plataforma diseñada para facilitar la consulta
+                    y comparación de información relacionada con diferentes disciplinas deportivas.
                 </p>
-
             </div>
-
         </section>
-
     </main>
 
-
-    <!-- PIE DE PÁGINA -->
     <footer class="footer">
-
         <div class="contenedor">
-
-            <p>
-                © 2026 SportsInfo - Proyecto de Sistemas de Información 2
-            </p>
-
+            <p>© 2026 SportsInfo - Proyecto de Sistemas de Información 2</p>
         </div>
-        <br>
-    
-
     </footer>
 
+    <script src="{{ url_for('static', filename='js/comparison.js') }}"></script>
 </body>
 
 </html>
