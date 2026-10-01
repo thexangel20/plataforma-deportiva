@@ -1,0 +1,26 @@
+SPORTSINFO - HU3
+Descargar el resultado de una comparación
+
+ESTADO
+Implementada como comparación básica provisional.
+
+ARCHIVOS PRINCIPALES
+app/comparacion.py
+app/pdf_comparacion.py
+app/templates/comparacion.html
+app/static/css/reportes.css
+requirements.txt
+
+RUTAS
+/comparar
+/comparar/descargar
+
+FUNCIONALIDAD
+Permite seleccionar dos o tres deportes.
+Muestra costos, moneda, período, condiciones, equipamiento, tiempo, alimentación y recomendaciones.
+Genera comparacion-sportsinfo.pdf.
+La descarga usa los datos firmados de la consulta y expira después de 30 minutos.
+La descarga exige protección CSRF.
+
+VALIDACION
+La HU3 está incluida en tests/test_hu1_hu3.py.

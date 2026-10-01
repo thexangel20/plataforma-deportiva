@@ -1,0 +1,22 @@
+SPORTSINFO - HU2
+Guardar deportes favoritos
+
+ESTADO
+Pendiente por decisión del equipo.
+
+MOTIVO
+Todavía no existe el sistema de cuentas de usuario. No se creó una versión temporal basada en la sesión del navegador.
+
+DATOS NECESARIOS PARA TERMINARLA
+Nombre de la tabla de usuarios.
+Identificador del usuario.
+Forma de inicio de sesión.
+Nombre e identificador de la tabla de deportes.
+Tabla de favoritos, si ya fue creada.
+
+FUNCIONALIDAD PENDIENTE
+Guardar un deporte como favorito.
+Mostrar los favoritos del usuario autenticado.
+Eliminar un favorito.
+Evitar favoritos duplicados.
+Restringir los favoritos al usuario propietario.

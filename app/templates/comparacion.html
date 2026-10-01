@@ -1,0 +1,52 @@
+{% extends 'base_reportes.html' %}
+{% block titulo %}Comparar deportes{% endblock %}
+{% block contenido %}
+<section class="panel panel-comparacion">
+    <h1>Comparar deportes</h1>
+    <p>Selecciona dos o tres deportes para consultar sus características y descargar un resumen.</p>
+    {% if provisional %}<p class="mensaje">Catálogo inicial: los datos todavía no registrados se muestran como información pendiente.</p>{% endif %}
+    <form method="get" action="{{ url_for('comparar') }}">
+        <input type="hidden" name="pagina" value="{{ pagina }}">
+        <fieldset class="seleccion-deportes">
+            <legend>Deportes disponibles</legend>
+            {% for opcion in opciones + seleccion_fuera %}
+            <label class="opcion-deporte">
+                <input type="checkbox" name="deporte" value="{{ opcion.identificador }}" {% if opcion.identificador in seleccion %}checked{% endif %}>
+                {{ opcion.nombre }}
+            </label>
+            {% else %}<p>No hay deportes disponibles en esta página.</p>{% endfor %}
+        </fieldset>
+        <div class="acciones">
+            <button class="boton" type="submit">Comparar seleccionados</button>
+            <a href="{{ url_for('comparar') }}">Limpiar selección</a>
+        </div>
+    </form>
+    <nav class="acciones" aria-label="Páginas de deportes">
+        {% if pagina > 1 %}<a href="{{ url_for('comparar', pagina=pagina-1, deporte=seleccion) }}">Anterior</a>{% endif %}
+        {% if siguiente %}<a href="{{ url_for('comparar', pagina=pagina+1, deporte=seleccion) }}">Siguiente</a>{% endif %}
+    </nav>
+    {% if seleccion|length == 1 %}<p class="mensaje">Selecciona al menos otro deporte para comparar.</p>{% endif %}
+    {% if resumen %}
+    <h2>Resultado de la comparación</h2>
+    <p>Consulta: {{ documento.fecha }}. Cada costo conserva su moneda y período.</p>
+    <div class="tabla-desplazable" role="region" aria-label="Comparación de características" tabindex="0">
+        <table class="tabla-comparacion">
+            <caption>Características de los deportes seleccionados</caption>
+            <thead><tr><th scope="col">Característica</th>{% for deporte in resumen %}<th scope="col">{{ deporte.nombre }}</th>{% endfor %}</tr></thead>
+            <tbody>
+                {% for etiqueta, valor in resumen[0].campos %}
+                {% set fila = loop.index0 %}
+                <tr><th scope="row">{{ etiqueta }}</th>{% for deporte in resumen %}<td>{{ deporte.campos[fila][1] }}</td>{% endfor %}</tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <form method="post" action="{{ url_for('descargar_comparacion') }}">
+        <input type="hidden" name="csrf" value="{{ obtener_csrf() }}">
+        <input type="hidden" name="comparacion" value="{{ firma }}">
+        <button class="boton" type="submit">Descargar comparación en PDF</button>
+        <p>La descarga contiene los datos de esta consulta y está disponible durante 30 minutos.</p>
+    </form>
+    {% endif %}
+</section>
+{% endblock %}

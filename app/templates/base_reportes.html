@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}SportsInfo{% endblock %} | SportsInfo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reportes.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="contenedor">
+            <a href="{{ url_for('inicio') }}" class="logo">SportsInfo</a>
+            <nav class="navegacion" aria-label="Navegación principal">
+                <a href="{{ url_for('inicio') }}">Inicio</a>
+                <a href="{{ url_for('comparar') }}">Comparar deportes</a>
+                {% if session.get('administrador') %}
+                <a href="{{ url_for('listar_reportes') }}">Reportes</a>
+                <a href="{{ url_for('administrar_deportes') }}">Editar deportes</a>
+                <form method="post" action="{{ url_for('salir') }}">
+                    <input type="hidden" name="csrf" value="{{ obtener_csrf() }}">
+                    <button class="boton" type="submit">Cerrar sesión</button>
+                </form>
+                {% else %}
+                <a href="{{ url_for('ingresar') }}">Administración</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    <main class="contenedor contenido-reportes">
+        {% for categoria, mensaje in get_flashed_messages(with_categories=true) %}
+        <p class="mensaje {{ categoria }}" role="status">{{ mensaje }}</p>
+        {% endfor %}
+        {% block contenido %}{% endblock %}
+    </main>
+</body>
+</html>

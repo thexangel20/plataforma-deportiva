@@ -1,0 +1,49 @@
+{% extends 'base_reportes.html' %}
+
+{% block titulo %}Reportar información{% endblock %}
+
+{% block contenido %}
+<section class="panel">
+    <h1>Reportar información</h1>
+
+    <p>Deporte: <strong>{{ nombre }}</strong></p>
+
+    <form method="post">
+        <input type="hidden" name="csrf" value="{{ obtener_csrf() }}">
+
+        <label for="campo">
+            ¿Qué dato es incorrecto o está desactualizado?
+        </label>
+
+        <select id="campo" name="campo" required>
+            <option value="">Selecciona un dato</option>
+
+            {% for opcion in campos %}
+                <option value="{{ opcion }}"
+                        {% if campo == opcion %}selected{% endif %}>
+                    {{ opcion }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label for="descripcion">Describe el problema</label>
+
+        <textarea id="descripcion"
+                  name="descripcion"
+                  rows="6"
+                  maxlength="1000"
+                  aria-describedby="ayuda"
+                  required>{{ descripcion }}</textarea>
+
+        <p id="ayuda">Máximo 1000 caracteres.</p>
+
+        <div class="acciones">
+            <button class="boton" type="submit">Enviar reporte</button>
+
+            <a href="{{ url_for('inicio') }}#deportes">
+                Volver a deportes
+            </a>
+        </div>
+    </form>
+</section>
+{% endblock %}

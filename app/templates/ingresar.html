@@ -1,0 +1,15 @@
+{% extends 'base_reportes.html' %}
+{% block titulo %}Ingresar{% endblock %}
+{% block contenido %}
+<section class="panel">
+    <h1>Acceso del administrador</h1>
+    <form method="post">
+        <input type="hidden" name="csrf" value="{{ obtener_csrf() }}">
+        <label for="usuario">Usuario</label>
+        <input id="usuario" name="usuario" autocomplete="username" required>
+        <label for="contrasena">Contraseña</label>
+        <input id="contrasena" name="contrasena" type="password" autocomplete="current-password" required>
+        <button class="boton" type="submit">Ingresar</button>
+    </form>
+</section>
+{% endblock %}

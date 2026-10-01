@@ -1,0 +1,26 @@
+SPORTSINFO - HU1
+Consultar condiciones y espacios de práctica
+
+ESTADO
+Implementada localmente.
+
+ARCHIVOS PRINCIPALES
+app/condiciones.py
+app/deportes.py
+app/templates/detalle_deporte.html
+app/templates/editar_deporte.html
+sql/hu1_condiciones.sql
+
+FUNCIONALIDAD
+El administrador puede guardar:
+- espacio_practica: interior, exterior o ambos
+- instalaciones_especiales: si o no
+- requiere_companeros: si o no
+
+El detalle público muestra esos datos y utiliza Información pendiente cuando no fueron cargados.
+
+SQL PARA UNA TABLA YA CREADA
+Ejecutar sql/hu1_condiciones.sql en Supabase.
+
+VALIDACION
+La HU1 está incluida en tests/test_hu1_hu3.py.

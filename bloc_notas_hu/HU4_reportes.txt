@@ -1,0 +1,34 @@
+SPORTSINFO - HU4
+Reportar información incorrecta o desactualizada
+
+ESTADO
+Implementada localmente. Falta probarla contra Supabase real.
+
+ARCHIVOS PRINCIPALES
+app/reportes.py
+app/servicios.py
+app/seguridad.py
+app/templates/reporte.html
+app/templates/ingresar.html
+app/templates/reportes.html
+app/templates/base_reportes.html
+app/static/css/reportes.css
+sql/estructura_axel.sql
+
+RUTAS
+/deportes/<deporte>/reportar
+/admin/ingresar
+/admin/reportes
+/admin/reportes/<identificador>/revisar
+/admin/salir
+
+FUNCIONALIDAD
+El usuario selecciona el dato incorrecto y escribe una descripción de hasta 1000 caracteres.
+El reporte se guarda con estado pendiente.
+El administrador puede iniciar sesión y filtrar reportes.
+El administrador puede marcar un reporte como revisado.
+Las acciones administrativas tienen protección de sesión y CSRF.
+Marcar un reporte como revisado no modifica la información del deporte.
+
+VALIDACION
+La HU4 está incluida en tests/test_historias.py.

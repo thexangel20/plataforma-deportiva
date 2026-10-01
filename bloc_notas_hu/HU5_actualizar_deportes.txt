@@ -1,0 +1,32 @@
+SPORTSINFO - HU5
+Actualizar la información de los deportes registrados
+
+ESTADO
+Implementada localmente. Falta probarla contra Supabase real.
+
+ARCHIVOS PRINCIPALES
+app/deportes.py
+app/servicios.py
+app/seguridad.py
+app/templates/administrar_deportes.html
+app/templates/editar_deporte.html
+app/templates/detalle_deporte.html
+app/templates/index.html
+app/static/css/reportes.css
+sql/estructura_axel.sql
+
+RUTAS
+/admin/deportes
+/admin/deportes/<identificador>/editar
+/deportes/<identificador>
+
+FUNCIONALIDAD
+El administrador selecciona un deporte registrado.
+Puede modificar nombre, costo, moneda, período, equipamiento, tiempo, alimentación, recomendaciones y condiciones.
+Puede reemplazar la imagen.
+Las imágenes aceptadas son JPEG, PNG y WebP, hasta 5 MB.
+Los cambios aparecen en el catálogo y el detalle público.
+La edición exige sesión administrativa y protección CSRF.
+
+VALIDACION
+La HU5 está incluida en tests/test_historias.py y tests/test_hu1_hu3.py.

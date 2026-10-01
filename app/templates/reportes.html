@@ -1,0 +1,38 @@
+{% extends 'base_reportes.html' %}
+{% block titulo %}Revisar reportes{% endblock %}
+{% block contenido %}
+<section class="panel">
+    <h1>Reportes de información</h1>
+    <p>Revisar un reporte no modifica los datos del deporte.</p>
+    <form method="get" class="acciones">
+        <label for="estado">Estado</label>
+        <select name="estado" id="estado">
+            {% for opcion in ['pendiente', 'revisado', 'todos'] %}
+            <option value="{{ opcion }}" {% if estado == opcion %}selected{% endif %}>{{ opcion|capitalize }}</option>
+            {% endfor %}
+        </select>
+        <button class="boton" type="submit">Filtrar</button>
+    </form>
+    {% for reporte in reportes %}
+    <article class="reporte">
+        <h2>{{ reporte.deporte }} · {{ reporte.campo_observado }}</h2>
+        <p class="descripcion-reporte">{{ reporte.descripcion }}</p>
+        <p>Estado: {{ reporte.estado }} · Fecha: {{ reporte.fecha_creacion }}</p>
+        {% if reporte.fecha_revision %}<p>Revisado: {{ reporte.fecha_revision }}</p>{% endif %}
+        {% if reporte.estado == 'pendiente' %}
+        <form method="post" action="{{ url_for('revisar_reporte', identificador=reporte.id) }}">
+            <input type="hidden" name="csrf" value="{{ obtener_csrf() }}">
+            <button class="boton" type="submit">Marcar como revisado</button>
+        </form>
+        {% endif %}
+    </article>
+    {% else %}
+    {% if not fallo %}<p>No hay reportes para este filtro.</p>{% endif %}
+    {% endfor %}
+    <nav class="acciones" aria-label="Páginas de reportes">
+        {% if pagina > 1 %}<a href="{{ url_for('listar_reportes', estado=estado, pagina=pagina-1) }}">Anterior</a>{% endif %}
+        <span>Página {{ pagina }}</span>
+        {% if siguiente %}<a href="{{ url_for('listar_reportes', estado=estado, pagina=pagina+1) }}">Siguiente</a>{% endif %}
+    </nav>
+</section>
+{% endblock %}
