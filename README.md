@@ -28,6 +28,9 @@ La HU23 agrega `/admin/deportes`, donde el administrador puede activar o
 desactivar deportes. La operación actualiza únicamente `activo`; el registro
 permanece almacenado y los módulos públicos solo consultan deportes activos.
 
+La HU24 agrega `/admin` y `/admin/resumen`, con totales del catálogo, estados
+activo/inactivo y distribución por nivel de costo calculados desde la información actual.
+
 ### Ejecución local
 
 ```bash

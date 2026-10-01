@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen administrativo | SportsInfo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <header class="header">
+        <div class="contenedor">
+            <a href="{{ url_for('inicio') }}" class="logo">SportsInfo</a>
+            <nav class="navegacion" aria-label="Navegación administrativa">
+                <a href="{{ url_for('admin_resumen') }}" aria-current="page">Resumen</a>
+                <a href="{{ url_for('admin_deportes') }}">Disponibilidad</a>
+                <a href="{{ url_for('inicio') }}">Catálogo público</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="pagina-admin">
+        <div class="contenedor">
+            <h1>Resumen administrativo</h1>
+            <p class="descripcion-seccion">
+                Estado actual del catálogo de deportes registrado en SportsInfo.
+            </p>
+
+            {% if error %}
+            <div class="estado estado-error" role="alert">{{ error }}</div>
+            {% else %}
+            <section class="tarjetas-estadisticas" aria-label="Estadísticas del catálogo">
+                <article class="tarjeta-estadistica tarjeta-total">
+                    <span class="estadistica-etiqueta">Total de deportes</span>
+                    <strong>{{ resumen.total }}</strong>
+                    <span>Registros conservados</span>
+                </article>
+                <article class="tarjeta-estadistica tarjeta-activa">
+                    <span class="estadistica-etiqueta">Deportes activos</span>
+                    <strong>{{ resumen.activos }}</strong>
+                    <span>Visibles en el catálogo</span>
+                </article>
+                <article class="tarjeta-estadistica tarjeta-inactiva">
+                    <span class="estadistica-etiqueta">Deportes inactivos</span>
+                    <strong>{{ resumen.inactivos }}</strong>
+                    <span>Conservados temporalmente</span>
+                </article>
+            </section>
+
+            <section class="resumen-costos" aria-labelledby="titulo-costos">
+                <h2 id="titulo-costos">Distribución por nivel de costo</h2>
+                <div class="costos-grid">
+                    <article class="costo-resumen costo-bajo">
+                        <div>
+                            <span class="costo-titulo">Bajo</span>
+                            <small>Hasta Bs. 150</small>
+                        </div>
+                        <strong>{{ resumen.por_costo.bajo }}</strong>
+                    </article>
+                    <article class="costo-resumen costo-medio">
+                        <div>
+                            <span class="costo-titulo">Medio</span>
+                            <small>Bs. 151–250</small>
+                        </div>
+                        <strong>{{ resumen.por_costo.medio }}</strong>
+                    </article>
+                    <article class="costo-resumen costo-alto">
+                        <div>
+                            <span class="costo-titulo">Alto</span>
+                            <small>Más de Bs. 250</small>
+                        </div>
+                        <strong>{{ resumen.por_costo.alto }}</strong>
+                    </article>
+                </div>
+            </section>
+
+            <div class="acciones-admin">
+                <a href="{{ url_for('admin_deportes') }}" class="boton">Gestionar disponibilidad</a>
+                <a href="{{ url_for('inicio') }}" class="boton boton-secundario">Ver catálogo público</a>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="contenedor">
+            <p>© 2026 SportsInfo - Proyecto de Sistemas de Información 2</p>
+        </div>
+    </footer>
+</body>
+
+</html>

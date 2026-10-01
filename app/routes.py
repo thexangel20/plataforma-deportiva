@@ -3,6 +3,7 @@ from __future__ import annotations
 from flask import flash, redirect, render_template, request, url_for
 
 from app import app
+from app.admin_summary import build_admin_summary
 from app.recommendations import available_objectives, recommend_deportes
 from app.repositories import RepositoryError, get_repository
 
@@ -125,6 +126,22 @@ def admin_deportes():
         error = "No fue posible cargar la disponibilidad de los deportes."
 
     return render_template("admin_deportes.html", deportes=deportes, error=error)
+
+
+@app.route("/admin")
+@app.route("/admin/resumen")
+def admin_resumen():
+    """Vista principal del administrador con métricas actuales del catálogo."""
+
+    error = None
+    resumen = {"total": 0, "activos": 0, "inactivos": 0, "por_costo": {"bajo": 0, "medio": 0, "alto": 0}}
+    try:
+        deportes = get_repository().list_all(include_inactive=True)
+        resumen = build_admin_summary(deportes)
+    except RepositoryError:
+        error = "No fue posible cargar el resumen administrativo."
+
+    return render_template("admin_resumen.html", resumen=resumen, error=error)
 
 
 @app.post("/admin/deportes/<sport_id>/estado")

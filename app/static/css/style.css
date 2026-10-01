@@ -243,6 +243,135 @@ body {
     font-size: 38px;
 }
 
+.tarjetas-estadisticas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 35px;
+}
+
+.tarjeta-estadistica {
+    display: grid;
+    gap: 8px;
+    padding: 25px;
+    border: 1px solid #dbeafe;
+    border-radius: 10px;
+    background: #eff6ff;
+}
+
+.tarjeta-estadistica strong {
+    color: #1e3a8a;
+    font-size: 42px;
+    line-height: 1;
+}
+
+.tarjeta-estadistica > span:last-child {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.estadistica-etiqueta {
+    color: #374151;
+    font-weight: bold;
+}
+
+.tarjeta-activa {
+    border-color: #bbf7d0;
+    background: #f0fdf4;
+}
+
+.tarjeta-activa strong {
+    color: #15803d;
+}
+
+.tarjeta-inactiva {
+    border-color: #e5e7eb;
+    background: #f9fafb;
+}
+
+.tarjeta-inactiva strong {
+    color: #4b5563;
+}
+
+.resumen-costos {
+    margin-top: 45px;
+}
+
+.resumen-costos h2 {
+    margin: 0 0 20px;
+    font-size: 26px;
+}
+
+.costos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.costo-resumen {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 18px;
+    border-left: 5px solid;
+    border-radius: 7px;
+    background: #f8fafc;
+}
+
+.costo-resumen strong {
+    font-size: 30px;
+}
+
+.costo-titulo,
+.costo-resumen small {
+    display: block;
+}
+
+.costo-titulo {
+    font-weight: bold;
+}
+
+.costo-resumen small {
+    margin-top: 5px;
+    color: #6b7280;
+}
+
+.costo-bajo {
+    border-color: #16a34a;
+}
+
+.costo-bajo strong {
+    color: #15803d;
+}
+
+.costo-medio {
+    border-color: #d97706;
+}
+
+.costo-medio strong {
+    color: #b45309;
+}
+
+.costo-alto {
+    border-color: #dc2626;
+}
+
+.costo-alto strong {
+    color: #b91c1c;
+}
+
+.acciones-admin {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 35px;
+}
+
+.boton-secundario {
+    background: #475569;
+}
+
 .tabla-admin-contenedor {
     overflow-x: auto;
     margin-top: 35px;
@@ -615,6 +744,16 @@ body {
     .pagina-admin h1 {
         font-size: 32px;
         text-align: left;
+    }
+
+    .tarjetas-estadisticas,
+    .costos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .acciones-admin .boton {
+        width: 100%;
+        text-align: center;
     }
 
     .pagina-comparacion {
