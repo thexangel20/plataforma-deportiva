@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Comparar deportes | SportsInfo</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- ENCABEZADO -->
+    <header class="header">
+
+        <div class="contenedor">
+
+            <a href="/" class="logo">
+                SportsInfo
+            </a>
+
+            <nav class="navegacion">
+                <a href="/">Inicio</a>
+                <a href="/comparacion">Comparar deportes</a>
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+
+        <!-- PRESENTACIÓN -->
+        <section class="hero">
+
+            <div class="contenedor">
+
+                <h1>Comparar deportes</h1>
+
+                <p>
+                    Selecciona dos o más deportes para analizar
+                    sus principales características de manera organizada.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- SELECCIÓN -->
+        <section class="seccion-comparacion">
+
+            <div class="contenedor">
+
+                <h2>Selecciona los deportes</h2>
+
+                <p class="descripcion-seccion">
+                    Puedes seleccionar dos o más disciplinas deportivas.
+                </p>
+
+
+                <form method="POST" action="/comparacion">
+
+                    <div class="lista-seleccion-deportes">
+
+                        {% for deporte in deportes %}
+
+                            <label class="opcion-deporte">
+
+                                <input
+                                    type="checkbox"
+                                    name="deportes"
+                                    value="{{ deporte }}"
+                                    {% if deporte in deportes_seleccionados %}
+                                        checked
+                                    {% endif %}
+                                >
+
+                                <span>
+                                    {{ datos_deportes[deporte].icono }}
+                                    {{ deporte }}
+                                </span>
+
+                            </label>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div class="boton-comparacion">
+
+                        <button type="submit" class="boton">
+                            Comparar deportes
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                {% if error %}
+
+                    <div class="mensaje-error">
+                        {{ error }}
+                    </div>
+
+                {% endif %}
+
+
+                {% if informaciones %}
+
+                    <div class="resultado-comparacion">
+
+                        <h2>
+                            Comparación de deportes
+                        </h2>
+
+                        <div class="tabla-comparacion">
+
+                            <!-- ENCABEZADO -->
+
+                            <div
+                                class="fila-comparacion encabezado-comparacion">
+
+                                <div>
+                                    Característica
+                                </div>
+
+                                {% for informacion in informaciones %}
+
+                                    <div>
+                                        {{ informacion.icono }}
+                                        {{ informacion.nombre }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+                            <!-- COSTO -->
+
+                            <div class="fila-comparacion">
+
+                                <div>
+                                    Costo estimado
+                                </div>
+
+                                {% for informacion in informaciones %}
+
+                                    <div>
+                                        {{ informacion.costo }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+                            <!-- EQUIPAMIENTO -->
+
+                            <div class="fila-comparacion">
+
+                                <div>
+                                    Equipamiento
+                                </div>
+
+                                {% for informacion in informaciones %}
+
+                                    <div>
+                                        {{ informacion.equipamiento }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+                            <!-- TIEMPO -->
+
+                            <div class="fila-comparacion">
+
+                                <div>
+                                    Tiempo de entrenamiento
+                                </div>
+
+                                {% for informacion in informaciones %}
+
+                                    <div>
+                                        {{ informacion.tiempo }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+                            <!-- FRECUENCIA -->
+
+                            <div class="fila-comparacion">
+
+                                <div>
+                                    Frecuencia
+                                </div>
+
+                                {% for informacion in informaciones %}
+
+                                    <div>
+                                        {{ informacion.frecuencia }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+                            <!-- DIFICULTAD -->
+
+                            <div class="fila-comparacion">
+
+                                <div>
+                                    Nivel de dificultad
+                                </div>
+
+                                {% for informacion in informaciones %}
+
+                                    <div>
+                                        {{ informacion.dificultad }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+                            <!-- BENEFICIOS -->
+
+                            <div class="fila-comparacion">
+
+                                <div>
+                                    Beneficios físicos
+                                </div>
+
+                                {% for informacion in informaciones %}
+
+                                    <div>
+                                        {{ informacion.beneficios }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="footer">
+
+        <div class="contenedor">
+
+            <p>
+                © 2026 SportsInfo - Proyecto de Sistemas de Información 2
+            </p>
+
+        </div>
+
+    </footer>
+
+</body>
+
+</html>

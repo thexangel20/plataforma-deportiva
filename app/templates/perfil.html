@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mi perfil | SportsInfo</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- ENCABEZADO -->
+    <header class="header">
+
+        <div class="contenedor">
+
+            <a href="/" class="logo">
+                SportsInfo
+            </a>
+
+            <nav class="navegacion">
+                <a href="/">Inicio</a>
+                <a href="/comparacion">Comparar deportes</a>
+                <a href="/perfil">Mi perfil</a>
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+
+        <!-- PRESENTACIÓN -->
+        <section class="hero">
+
+            <div class="contenedor">
+
+                <h1>Mi perfil deportivo</h1>
+
+                <p>
+                    Registra tus características, experiencia,
+                    objetivos, disponibilidad y presupuesto para
+                    personalizar tu experiencia en SportsInfo.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- PERFIL -->
+        <section class="seccion-perfil">
+
+            <div class="contenedor">
+
+                <div class="encabezado-perfil">
+
+                    <h2>
+                        Información deportiva
+                    </h2>
+
+                    <p class="descripcion-seccion">
+                        Completa los datos que serán utilizados
+                        posteriormente para generar recomendaciones.
+                    </p>
+
+                </div>
+
+
+                {% if mensaje %}
+
+                    <div class="mensaje-exito">
+                        {{ mensaje }}
+                    </div>
+
+                {% endif %}
+
+
+                {% if error %}
+
+                    <div class="mensaje-error">
+                        {{ error }}
+                    </div>
+
+                {% endif %}
+
+
+                <form method="POST" action="/perfil" class="formulario-perfil">
+
+                    <!-- INFORMACIÓN PERSONAL -->
+                    <div class="grupo-perfil">
+
+                        <h3>
+                            Información personal
+                        </h3>
+
+                        <div class="campos-perfil">
+
+                            <div class="campo-perfil">
+
+                                <label for="edad">
+                                    Edad
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="edad"
+                                    name="edad"
+                                    min="5"
+                                    max="100"
+                                    value="{{ perfil.edad if perfil else '' }}"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="campo-perfil">
+
+                                <label for="sexo">
+                                    Sexo
+                                </label>
+
+                                <select
+                                    id="sexo"
+                                    name="sexo"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Selecciona una opción
+                                    </option>
+
+                                    <option
+                                        value="Femenino"
+                                        {% if perfil and perfil.sexo == "Femenino" %}selected{% endif %}
+                                    >
+                                        Femenino
+                                    </option>
+
+                                    <option
+                                        value="Masculino"
+                                        {% if perfil and perfil.sexo == "Masculino" %}selected{% endif %}
+                                    >
+                                        Masculino
+                                    </option>
+
+                                    <option
+                                        value="Otro"
+                                        {% if perfil and perfil.sexo == "Otro" %}selected{% endif %}
+                                    >
+                                        Otro
+                                    </option>
+
+                                    <option
+                                        value="Prefiero no decirlo"
+                                        {% if perfil and perfil.sexo == "Prefiero no decirlo" %}selected{% endif %}
+                                    >
+                                        Prefiero no decirlo
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="campo-perfil">
+
+                                <label for="peso">
+                                    Peso (kg)
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="peso"
+                                    name="peso"
+                                    min="20"
+                                    max="300"
+                                    step="0.1"
+                                    value="{{ perfil.peso if perfil else '' }}"
+                                    required
+                                >
+
+                            </div>
+
+
+
+
+
+
+   <div class="campo-perfil">
+    <label for="altura">Altura</label>
+
+    <input
+        type="text"
+        id="altura"
+        name="altura"
+        placeholder="Ej. 1.75 m o 175 cm"
+        value="{{ perfil.altura if perfil else '' }}"
+    >
+
+    <small>
+        Puede ingresar la altura en metros o centímetros.
+    </small>
+</div>                        
+
+
+
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- INFORMACIÓN DEPORTIVA -->
+                    <div class="grupo-perfil">
+
+                        <h3>
+                            Información deportiva
+                        </h3>
+
+                        <div class="campos-perfil">
+
+                            <div class="campo-perfil">
+
+                                <label for="experiencia">
+                                    Experiencia deportiva
+                                </label>
+
+                                <select
+                                    id="experiencia"
+                                    name="experiencia"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Selecciona tu experiencia
+                                    </option>
+
+                                    <option
+                                        value="Principiante"
+                                        {% if perfil and perfil.experiencia == "Principiante" %}selected{% endif %}
+                                    >
+                                        Principiante
+                                    </option>
+
+                                    <option
+                                        value="Intermedio"
+                                        {% if perfil and perfil.experiencia == "Intermedio" %}selected{% endif %}
+                                    >
+                                        Intermedio
+                                    </option>
+
+                                    <option
+                                        value="Avanzado"
+                                        {% if perfil and perfil.experiencia == "Avanzado" %}selected{% endif %}
+                                    >
+                                        Avanzado
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="campo-perfil">
+
+                                <label for="objetivo">
+                                    Objetivo principal
+                                </label>
+
+                                <select
+                                    id="objetivo"
+                                    name="objetivo"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Selecciona tu objetivo
+                                    </option>
+
+                                    <option
+                                        value="Mejorar resistencia"
+                                        {% if perfil and perfil.objetivo == "Mejorar resistencia" %}selected{% endif %}
+                                    >
+                                        Mejorar resistencia
+                                    </option>
+
+                                    <option
+                                        value="Ganar fuerza"
+                                        {% if perfil and perfil.objetivo == "Ganar fuerza" %}selected{% endif %}
+                                    >
+                                        Ganar fuerza
+                                    </option>
+
+                                    <option
+                                        value="Mejorar velocidad"
+                                        {% if perfil and perfil.objetivo == "Mejorar velocidad" %}selected{% endif %}
+                                    >
+                                        Mejorar velocidad
+                                    </option>
+
+                                    <option
+                                        value="Mejorar salud"
+                                        {% if perfil and perfil.objetivo == "Mejorar salud" %}selected{% endif %}
+                                    >
+                                        Mejorar salud
+                                    </option>
+
+                                    <option
+                                        value="Recreación"
+                                        {% if perfil and perfil.objetivo == "Recreación" %}selected{% endif %}
+                                    >
+                                        Recreación
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="campo-perfil campo-completo">
+
+                            <label for="deportes_practicados">
+                                Deportes practicados
+                            </label>
+
+                            <input
+                                type="text"
+                                id="deportes_practicados"
+                                name="deportes_practicados"
+                                placeholder="Ejemplo: fútbol, natación"
+                                value="{{ perfil.deportes_practicados if perfil else '' }}"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DISPONIBILIDAD -->
+                    <div class="grupo-perfil">
+
+                        <h3>
+                            Disponibilidad
+                        </h3>
+
+                        <div class="campos-perfil">
+
+                            <div class="campo-perfil">
+
+                                <label for="dias_disponibles">
+                                    Días disponibles por semana
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="dias_disponibles"
+                                    name="dias_disponibles"
+                                    min="1"
+                                    max="7"
+                                    value="{{ perfil.dias_disponibles if perfil else '' }}"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="campo-perfil">
+
+                                <label for="horas_disponibles">
+                                    Horas disponibles por semana
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="horas_disponibles"
+                                    name="horas_disponibles"
+                                    min="1"
+                                    max="40"
+                                    step="0.5"
+                                    value="{{ perfil.horas_disponibles if perfil else '' }}"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PRESUPUESTO -->
+                    <div class="grupo-perfil">
+
+                        <h3>
+                            Presupuesto
+                        </h3>
+
+                        <div class="campos-perfil">
+
+                            <div class="campo-perfil">
+
+                                <label for="presupuesto">
+                                    Presupuesto mensual (Bs)
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="presupuesto"
+                                    name="presupuesto"
+                                    min="0"
+                                    max="100000"
+                                    step="0.01"
+                                    value="{{ perfil.presupuesto if perfil else '' }}"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BOTONES -->
+                    <div class="acciones-perfil">
+
+                        <button
+                            type="submit"
+                            class="boton"
+                        >
+                            Guardar perfil
+                        </button>
+
+                        <a
+                            href="/"
+                            class="boton-secundario"
+                        >
+                            Cancelar
+                        </a>
+
+                    </div>
+
+                </form>
+
+
+                {% if perfil %}
+
+                    <div class="resumen-perfil">
+
+                        <h2>
+                            Perfil registrado
+                        </h2>
+
+                        <div class="resumen-grid">
+
+                            <div>
+                                <strong>Edad</strong>
+                                <span>{{ perfil.edad }} años</span>
+                            </div>
+
+                            <div>
+                                <strong>Experiencia</strong>
+                                <span>{{ perfil.experiencia }}</span>
+                            </div>
+
+                            <div>
+                                <strong>Objetivo</strong>
+                                <span>{{ perfil.objetivo }}</span>
+                            </div>
+
+                            <div>
+                                <strong>Disponibilidad</strong>
+                                <span>
+                                    {{ perfil.dias_disponibles }} días /
+                                    {{ perfil.horas_disponibles }} horas
+                                </span>
+                            </div>
+
+                            <div>
+                                <strong>Presupuesto</strong>
+                                <span>
+                                    Bs {{ perfil.presupuesto }} mensuales
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="footer">
+
+        <div class="contenedor">
+
+            <p>
+                © 2026 SportsInfo - Proyecto de Sistemas de Información 2
+            </p>
+
+        </div>
+
+    </footer>
+
+</body>
+
+</html>

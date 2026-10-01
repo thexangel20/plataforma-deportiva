@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Calcular costos | SportsInfo</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- ENCABEZADO -->
+    <header class="header">
+
+        <div class="contenedor">
+
+            <a href="/" class="logo">
+                SportsInfo
+            </a>
+
+            <nav class="navegacion">
+                <a href="/">Inicio</a>
+                <a href="/comparacion">Comparar deportes</a>
+                <a href="/costos">Calcular costos</a>
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+
+        <!-- PRESENTACIÓN -->
+        <section class="hero">
+
+            <div class="contenedor">
+
+                <h1>Calcular costo deportivo</h1>
+
+                <p>
+                    Estima cuánto necesitas para practicar un deporte
+                    durante el período que elijas.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- FORMULARIO -->
+        <section class="seccion-costos">
+
+            <div class="contenedor">
+
+                <h2>Datos para calcular el costo</h2>
+
+                <p class="descripcion-seccion">
+                    Selecciona un deporte, establece el período e ingresa
+                    los gastos correspondientes.
+                </p>
+
+
+                <form method="POST" action="/costos" class="formulario-costos">
+
+                    <!-- DEPORTE Y PERÍODO -->
+                    <div class="grupo-costos">
+
+                        <h3>Información general</h3>
+
+                        <div class="campos-costos">
+
+                            <div class="campo-costo">
+
+                                <label for="deporte">
+                                    Deporte
+                                </label>
+
+                                <select
+                                    id="deporte"
+                                    name="deporte"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Selecciona un deporte
+                                    </option>
+
+                                    {% for deporte in deportes %}
+
+                                        <option
+                                            value="{{ deporte }}"
+                                            {% if valores.deporte == deporte %}
+                                                selected
+                                            {% endif %}
+                                        >
+                                            {{ deporte }}
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="campo-costo">
+
+                                <label for="periodo">
+                                    Período en meses
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="periodo"
+                                    name="periodo"
+                                    min="1"
+                                    step="1"
+                                    value="{{ valores.periodo }}"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- GASTOS -->
+                    <div class="grupo-costos">
+
+                        <h3>Gastos</h3>
+
+                        <p class="texto-ayuda">
+                            Ingresa los valores en bolivianos (Bs).
+                            Los gastos mensuales se multiplicarán por
+                            la cantidad de meses seleccionada.
+                        </p>
+
+
+                        <div class="campos-costos">
+
+                            <div class="campo-costo">
+
+                                <label for="inscripcion">
+                                    Inscripción
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="inscripcion"
+                                    name="inscripcion"
+                                    min="0"
+                                    step="0.01"
+                                    value="{{ valores.inscripcion }}"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+
+                            <div class="campo-costo">
+
+                                <label for="mensualidad">
+                                    Mensualidad
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="mensualidad"
+                                    name="mensualidad"
+                                    min="0"
+                                    step="0.01"
+                                    value="{{ valores.mensualidad }}"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+
+                            <div class="campo-costo">
+
+                                <label for="instalaciones">
+                                    Instalaciones
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="instalaciones"
+                                    name="instalaciones"
+                                    min="0"
+                                    step="0.01"
+                                    value="{{ valores.instalaciones }}"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+
+                            <div class="campo-costo">
+
+                                <label for="equipamiento">
+                                    Equipamiento
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="equipamiento"
+                                    name="equipamiento"
+                                    min="0"
+                                    step="0.01"
+                                    value="{{ valores.equipamiento }}"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+
+                            <div class="campo-costo">
+
+                                <label for="vestimenta">
+                                    Vestimenta
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="vestimenta"
+                                    name="vestimenta"
+                                    min="0"
+                                    step="0.01"
+                                    value="{{ valores.vestimenta }}"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+
+                            <div class="campo-costo">
+
+                                <label for="transporte">
+                                    Transporte mensual
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="transporte"
+                                    name="transporte"
+                                    min="0"
+                                    step="0.01"
+                                    value="{{ valores.transporte }}"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+
+                            <div class="campo-costo">
+
+                                <label for="alimentacion">
+                                    Alimentación mensual
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="alimentacion"
+                                    name="alimentacion"
+                                    min="0"
+                                    step="0.01"
+                                    value="{{ valores.alimentacion }}"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ERROR -->
+                    {% if error %}
+
+                        <div class="mensaje-error">
+                            {{ error }}
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- BOTÓN -->
+                    <div class="boton-costos">
+
+                        <button
+                            type="submit"
+                            class="boton"
+                        >
+                            Calcular costo
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                <!-- RESULTADO -->
+                {% if resultado %}
+
+                    <section class="resultado-costos">
+
+                        <h2>
+                            Resultado del cálculo
+                        </h2>
+
+
+                        <div class="resumen-costo">
+
+                            <div class="tarjeta-resumen-costo">
+
+                                <span>
+                                    Deporte
+                                </span>
+
+                                <strong>
+                                    {{ resultado.deporte }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="tarjeta-resumen-costo">
+
+                                <span>
+                                    Período
+                                </span>
+
+                                <strong>
+                                    {{ resultado.periodo }} meses
+                                </strong>
+
+                            </div>
+
+
+                            <div class="tarjeta-resumen-costo">
+
+                                <span>
+                                    Costo mensual
+                                </span>
+
+                                <strong>
+                                    Bs {{ "%.2f"|format(resultado.costo_mensual) }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="tarjeta-resumen-costo principal">
+
+                                <span>
+                                    Costo total
+                                </span>
+
+                                <strong>
+                                    Bs {{ "%.2f"|format(resultado.costo_total) }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DETALLE -->
+                        <div class="detalle-costos">
+
+                            <h3>
+                                Detalle de gastos
+                            </h3>
+
+
+                            <div class="lista-costos">
+
+                                <div class="fila-costo">
+
+                                    <span>
+                                        Inscripción
+                                    </span>
+
+                                    <strong>
+                                        Bs {{ "%.2f"|format(resultado.gastos.inscripcion) }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="fila-costo">
+
+                                    <span>
+                                        Mensualidad
+                                    </span>
+
+                                    <strong>
+                                        Bs {{ "%.2f"|format(resultado.gastos.mensualidad) }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="fila-costo">
+
+                                    <span>
+                                        Instalaciones
+                                    </span>
+
+                                    <strong>
+                                        Bs {{ "%.2f"|format(resultado.gastos.instalaciones) }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="fila-costo">
+
+                                    <span>
+                                        Equipamiento
+                                    </span>
+
+                                    <strong>
+                                        Bs {{ "%.2f"|format(resultado.gastos.equipamiento) }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="fila-costo">
+
+                                    <span>
+                                        Vestimenta
+                                    </span>
+
+                                    <strong>
+                                        Bs {{ "%.2f"|format(resultado.gastos.vestimenta) }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="fila-costo">
+
+                                    <span>
+                                        Transporte mensual
+                                    </span>
+
+                                    <strong>
+                                        Bs {{ "%.2f"|format(resultado.gastos.transporte) }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="fila-costo">
+
+                                    <span>
+                                        Alimentación mensual
+                                    </span>
+
+                                    <strong>
+                                        Bs {{ "%.2f"|format(resultado.gastos.alimentacion) }}
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="nota-costos">
+
+                            <strong>
+                                ¿Cómo se calculó?
+                            </strong>
+
+                            <p>
+                                El costo mensual considera la mensualidad,
+                                instalaciones, transporte y alimentación.
+                                Los gastos únicos como inscripción,
+                                equipamiento y vestimenta se agregan al
+                                costo total del período.
+                            </p>
+
+                        </div>
+
+                    </section>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="footer">
+
+        <div class="contenedor">
+
+            <p>
+                © 2026 SportsInfo - Proyecto de Sistemas de Información 2
+            </p>
+
+        </div>
+
+    </footer>
+
+</body>
+
+</html>

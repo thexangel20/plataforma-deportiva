@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Recomendaciones | SportsInfo</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+    <header class="header">
+
+        <div class="contenedor">
+
+            <a href="/" class="logo">
+                SportsInfo
+            </a>
+
+            <nav class="navegacion">
+
+                <a href="/">
+                    Inicio
+                </a>
+
+                <a href="/comparacion">
+                    Comparar deportes
+                </a>
+
+                <a href="/recomendaciones">
+                    Recomendaciones
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+        <section class="hero">
+
+            <div class="contenedor">
+
+                <h1>
+                    Recomendaciones personalizadas
+                </h1>
+
+                <p>
+                    Completa tus datos para encontrar disciplinas
+                    que puedan adaptarse a tus características.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <section class="seccion-comparacion">
+
+            <div class="contenedor">
+
+                <h2>
+                    Tu perfil deportivo
+                </h2>
+
+                <form method="POST"
+                      action="/recomendaciones">
+
+                    <div class="seleccion-deportes">
+
+                        <div class="campo-comparacion">
+
+                            <label for="edad">
+                                Edad
+                            </label>
+
+                            <input
+                                type="number"
+                                id="edad"
+                                name="edad"
+                                min="1"
+                                max="100"
+                                required
+                                value="{{ datos.edad if datos else '' }}"
+                            >
+
+                        </div>
+
+
+                        <div class="campo-comparacion">
+
+                            <label for="experiencia">
+                                Experiencia
+                            </label>
+
+                            <select
+                                id="experiencia"
+                                name="experiencia"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecciona
+                                </option>
+
+                                <option value="principiante">
+                                    Principiante
+                                </option>
+
+                                <option value="intermedio">
+                                    Intermedio
+                                </option>
+
+                                <option value="avanzado">
+                                    Avanzado
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="campo-comparacion">
+
+                            <label for="objetivo">
+                                Objetivo
+                            </label>
+
+                            <select
+                                id="objetivo"
+                                name="objetivo"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecciona
+                                </option>
+
+                                <option value="perder_peso">
+                                    Perder peso
+                                </option>
+
+                                <option value="fuerza">
+                                    Ganar fuerza
+                                </option>
+
+                                <option value="resistencia">
+                                    Mejorar resistencia
+                                </option>
+
+                                <option value="flexibilidad">
+                                    Mejorar flexibilidad
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="campo-comparacion">
+
+                            <label for="disponibilidad">
+                                Disponibilidad
+                            </label>
+
+                            <select
+                                id="disponibilidad"
+                                name="disponibilidad"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecciona
+                                </option>
+
+                                <option value="baja">
+                                    Baja
+                                </option>
+
+                                <option value="media">
+                                    Media
+                                </option>
+
+                                <option value="alta">
+                                    Alta
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="campo-comparacion">
+
+                            <label for="presupuesto">
+                                Presupuesto
+                            </label>
+
+                            <select
+                                id="presupuesto"
+                                name="presupuesto"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecciona
+                                </option>
+
+                                <option value="bajo">
+                                    Bajo
+                                </option>
+
+                                <option value="medio">
+                                    Medio
+                                </option>
+
+                                <option value="alto">
+                                    Alto
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="boton-comparacion">
+
+                        <button type="submit" class="boton">
+                            Obtener recomendaciones
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                {% if resultados %}
+
+                    <div class="resultado-comparacion">
+
+                        <h2>
+                            Deportes recomendados
+                        </h2>
+
+                        <div class="tarjetas-deportes">
+
+                            {% for resultado in resultados %}
+
+                                <article class="tarjeta-deporte">
+
+                                    <div class="icono-deporte">
+
+                                        {{ resultado.deporte.icono }}
+
+                                    </div>
+
+                                    <h3>
+                                        {{ resultado.nombre }}
+                                    </h3>
+
+                                    <p>
+                                        Compatibilidad:
+                                        {{ resultado.puntaje }}
+                                        puntos
+                                    </p>
+
+                                    {% if resultado.motivos %}
+
+                                        <p>
+                                            {{ resultado.motivos
+                                                |join(', ')
+                                                |capitalize
+                                            }}.
+                                        </p>
+
+                                    {% endif %}
+
+                                    <a
+                                        href="/comparacion"
+                                        class="enlace-tarjeta"
+                                    >
+                                        Comparar deporte
+                                    </a>
+
+                                </article>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer class="footer">
+
+        <div class="contenedor">
+
+            <p>
+                © 2026 SportsInfo -
+                Proyecto de Sistemas de Información 2
+            </p>
+
+        </div>
+
+    </footer>
+
+</body>
+
+</html>

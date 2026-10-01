@@ -241,3 +241,583 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+
+/* =========================
+   COMPARACIÓN DE DEPORTES
+   ========================= */
+
+.seccion-comparacion {
+    padding: 70px 0;
+    background-color: white;
+}
+
+.seccion-comparacion h2 {
+    margin: 0 0 10px 0;
+    text-align: center;
+    font-size: 32px;
+}
+
+.seleccion-deportes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    max-width: 800px;
+    margin: 40px auto 25px auto;
+}
+
+.campo-comparacion {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.campo-comparacion label {
+    font-weight: bold;
+    color: #374151;
+}
+
+.campo-comparacion select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: white;
+    color: #1f2937;
+    font-size: 16px;
+}
+
+.campo-comparacion select:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.boton-comparacion {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.mensaje-error {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 15px;
+    border-radius: 6px;
+    background-color: #fee2e2;
+    color: #991b1b;
+    text-align: center;
+}
+
+.resultado-comparacion {
+    margin-top: 50px;
+}
+
+.resultado-comparacion h2 {
+    margin-bottom: 25px;
+}
+
+.tabla-comparacion {
+    max-width: 1000px;
+    margin: 0 auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.fila-comparacion {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.fila-comparacion:last-child {
+    border-bottom: none;
+}
+
+.fila-comparacion > div {
+    padding: 18px;
+    border-right: 1px solid #e5e7eb;
+    line-height: 1.5;
+}
+
+.fila-comparacion > div:last-child {
+    border-right: none;
+}
+
+.encabezado-comparacion {
+    background-color: #eaf2ff;
+    font-weight: bold;
+}
+
+.encabezado-comparacion > div {
+    color: #1f2937;
+}
+
+@media (max-width: 700px) {
+
+    .seleccion-deportes {
+        grid-template-columns: 1fr;
+    }
+
+    .fila-comparacion {
+        grid-template-columns: 1fr;
+    }
+
+    .fila-comparacion > div {
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .fila-comparacion > div:last-child {
+        border-bottom: none;
+    }
+}
+
+/* =========================
+   SELECCIÓN MÚLTIPLE
+   ========================= */
+
+.lista-seleccion-deportes {
+    max-width: 900px;
+    margin: 40px auto 25px auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.opcion-deporte {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background-color: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.opcion-deporte:hover {
+    border-color: #2563eb;
+    background-color: #eaf2ff;
+}
+
+.opcion-deporte input {
+    width: 18px;
+    height: 18px;
+}
+
+.opcion-deporte span {
+    font-size: 16px;
+    color: #374151;
+}
+
+
+/* =========================
+   TABLA COMPARATIVA MÚLTIPLE
+   ========================= */
+
+.tabla-comparacion {
+    overflow-x: auto;
+}
+
+.fila-comparacion {
+    min-width: 700px;
+}
+
+
+/* =========================
+   PANTALLAS PEQUEÑAS
+   ========================= */
+
+@media (max-width: 700px) {
+
+    .lista-seleccion-deportes {
+        grid-template-columns: 1fr;
+    }
+
+    .tabla-comparacion {
+        overflow-x: auto;
+    }
+}
+
+.campo-comparacion input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: white;
+    color: #1f2937;
+    font-size: 16px;
+}
+
+.campo-comparacion input:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+/* =========================
+   CÁLCULO DE COSTOS
+   ========================= */
+
+.seccion-costos {
+    padding: 70px 0;
+    background-color: white;
+}
+
+.seccion-costos h2 {
+    margin: 0 0 10px 0;
+    text-align: center;
+    font-size: 32px;
+}
+
+.formulario-costos {
+    max-width: 900px;
+    margin: 40px auto 0 auto;
+}
+
+.grupo-costos {
+    margin-bottom: 35px;
+    padding: 25px;
+    background-color: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.grupo-costos h3 {
+    margin: 0 0 20px 0;
+    font-size: 22px;
+}
+
+.texto-ayuda {
+    margin: -10px 0 25px 0;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+.campos-costos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.campo-costo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.campo-costo label {
+    font-weight: bold;
+    color: #374151;
+}
+
+.campo-costo input,
+.campo-costo select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: white;
+    color: #1f2937;
+    font-size: 16px;
+}
+
+.campo-costo input:focus,
+.campo-costo select:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.boton-costos {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.resultado-costos {
+    max-width: 1000px;
+    margin: 60px auto 0 auto;
+}
+
+.resultado-costos h2 {
+    margin-bottom: 30px;
+}
+
+.resumen-costo {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 35px;
+}
+
+.tarjeta-resumen-costo {
+    padding: 20px;
+    background-color: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.tarjeta-resumen-costo span {
+    display: block;
+    margin-bottom: 10px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.tarjeta-resumen-costo strong {
+    display: block;
+    color: #1f2937;
+    font-size: 20px;
+}
+
+.tarjeta-resumen-costo.principal {
+    background-color: #eaf2ff;
+    border-color: #2563eb;
+}
+
+.tarjeta-resumen-costo.principal strong {
+    color: #2563eb;
+    font-size: 24px;
+}
+
+.detalle-costos {
+    padding: 25px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.detalle-costos h3 {
+    margin: 0 0 20px 0;
+}
+
+.lista-costos {
+    border-top: 1px solid #e5e7eb;
+}
+
+.fila-costo {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 15px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.fila-costo span {
+    color: #4b5563;
+}
+
+.fila-costo strong {
+    color: #1f2937;
+}
+
+.nota-costos {
+    margin-top: 25px;
+    padding: 20px;
+    background-color: #f5f7fa;
+    border-radius: 8px;
+}
+
+.nota-costos strong {
+    color: #1f2937;
+}
+
+.nota-costos p {
+    margin: 10px 0 0 0;
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+
+@media (max-width: 800px) {
+
+    .campos-costos {
+        grid-template-columns: 1fr;
+    }
+
+    .resumen-costo {
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .resumen-costo {
+        grid-template-columns: 1fr;
+    }
+
+    .fila-costo {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+}
+
+/* =========================
+   PERFIL DEPORTIVO
+   ========================= */
+
+.seccion-perfil {
+    padding: 70px 0;
+    background-color: white;
+}
+
+.encabezado-perfil {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.encabezado-perfil h2 {
+    margin: 0 0 10px 0;
+    font-size: 32px;
+}
+
+.formulario-perfil {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.grupo-perfil {
+    margin-bottom: 35px;
+    padding: 30px;
+    background-color: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.grupo-perfil h3 {
+    margin: 0 0 25px 0;
+    color: #1f2937;
+    font-size: 22px;
+}
+
+.campos-perfil {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.campo-perfil {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.campo-completo {
+    margin-top: 25px;
+}
+
+.campo-perfil label {
+    font-weight: bold;
+    color: #374151;
+}
+
+.campo-perfil input,
+.campo-perfil select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: white;
+    color: #1f2937;
+    font-size: 16px;
+    font-family: inherit;
+}
+
+.campo-perfil input:focus,
+.campo-perfil select:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.acciones-perfil {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.boton-secundario {
+    display: inline-block;
+    padding: 14px 25px;
+    background-color: #e5e7eb;
+    color: #374151;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.boton-secundario:hover {
+    background-color: #d1d5db;
+}
+
+.mensaje-exito {
+    max-width: 900px;
+    margin: 0 auto 25px auto;
+    padding: 15px;
+    border-radius: 6px;
+    background-color: #dcfce7;
+    color: #166534;
+    text-align: center;
+}
+
+.resumen-perfil {
+    max-width: 900px;
+    margin: 50px auto 0 auto;
+    padding: 30px;
+    background-color: #eaf2ff;
+    border-radius: 10px;
+}
+
+.resumen-perfil h2 {
+    margin: 0 0 25px 0;
+    text-align: center;
+}
+
+.resumen-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.resumen-grid div {
+    padding: 18px;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.resumen-grid strong {
+    display: block;
+    margin-bottom: 7px;
+    color: #374151;
+}
+
+.resumen-grid span {
+    color: #6b7280;
+}
+
+
+@media (max-width: 700px) {
+
+    .campos-perfil {
+        grid-template-columns: 1fr;
+    }
+
+    .resumen-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .acciones-perfil {
+        flex-direction: column;
+    }
+
+    .acciones-perfil .boton,
+    .acciones-perfil .boton-secundario {
+        width: 100%;
+        text-align: center;
+    }
+
+}
