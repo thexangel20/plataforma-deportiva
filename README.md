@@ -24,6 +24,10 @@ recomendaciones. También permite quitar deportes de la comparación.
 La HU22 agrega `/recomendar`, donde el visitante indica costo, objetivo y
 tiempo disponible para recibir recomendaciones adaptadas a sus preferencias.
 
+La HU23 agrega `/admin/deportes`, donde el administrador puede activar o
+desactivar deportes. La operación actualiza únicamente `activo`; el registro
+permanece almacenado y los módulos públicos solo consultan deportes activos.
+
 ### Ejecución local
 
 ```bash

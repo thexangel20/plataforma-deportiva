@@ -224,6 +224,107 @@ body {
     color: #991b1b;
 }
 
+.estado-exito {
+    margin-bottom: 20px;
+    border-color: #bbf7d0;
+    background: #f0fdf4;
+    color: #166534;
+}
+
+.pagina-admin {
+    min-height: calc(100vh - 170px);
+    padding: 55px 0 75px;
+    background: #fff;
+}
+
+.pagina-admin h1 {
+    margin: 22px 0 10px;
+    text-align: center;
+    font-size: 38px;
+}
+
+.tabla-admin-contenedor {
+    overflow-x: auto;
+    margin-top: 35px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.tabla-admin {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: collapse;
+    background: white;
+}
+
+.tabla-admin th,
+.tabla-admin td {
+    padding: 17px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.tabla-admin thead th {
+    background: #eff6ff;
+    color: #1e3a8a;
+    font-size: 14px;
+}
+
+.tabla-admin tbody th {
+    color: #1f2937;
+}
+
+.deporte-admin-nombre,
+.tabla-admin tbody th small {
+    display: block;
+}
+
+.tabla-admin tbody th small {
+    margin-top: 5px;
+    color: #6b7280;
+    font-weight: normal;
+}
+
+.estado-insignia {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.estado-activo {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.estado-inactivo {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+.boton-estado {
+    padding: 8px 13px;
+    border: 0;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.boton-estado:hover {
+    filter: brightness(0.94);
+}
+
+.boton-desactivar {
+    background: #dc2626;
+}
+
+.boton-activar {
+    background: #16a34a;
+}
+
 .estado-error .boton {
     margin-top: 10px;
     color: white;
@@ -507,6 +608,11 @@ body {
     }
 
     .pagina-recomendacion h1 {
+        font-size: 32px;
+        text-align: left;
+    }
+
+    .pagina-admin h1 {
         font-size: 32px;
         text-align: left;
     }

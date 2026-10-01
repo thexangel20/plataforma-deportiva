@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar disponibilidad | SportsInfo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <header class="header">
+        <div class="contenedor">
+            <a href="{{ url_for('inicio') }}" class="logo">SportsInfo</a>
+            <nav class="navegacion" aria-label="Navegación administrativa">
+                <a href="{{ url_for('inicio') }}">Catálogo público</a>
+                <a href="{{ url_for('admin_deportes') }}" aria-current="page">Disponibilidad</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="pagina-admin">
+        <div class="contenedor">
+            <a href="{{ url_for('inicio') }}" class="volver">← Volver al catálogo</a>
+            <h1>Disponibilidad de deportes</h1>
+            <p class="descripcion-seccion">
+                Activa o desactiva la publicación de un deporte sin eliminar su información.
+            </p>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                <div class="estado {% if category == 'error' %}estado-error{% else %}estado-exito{% endif %}" role="status">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endwith %}
+
+            {% if error %}
+            <div class="estado estado-error" role="alert">{{ error }}</div>
+            {% elif deportes %}
+            <div class="tabla-admin-contenedor">
+                <table class="tabla-admin">
+                    <caption class="sr-only">Estado de disponibilidad de los deportes</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Deporte</th>
+                            <th scope="col">Costo</th>
+                            <th scope="col">Duración</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for deporte in deportes %}
+                        <tr>
+                            <th scope="row">
+                                <span class="deporte-admin-nombre">{{ deporte.icono }} {{ deporte.nombre }}</span>
+                                <small>{{ deporte.objetivo }}</small>
+                            </th>
+                            <td>{{ deporte.moneda }} {{ "%.2f"|format(deporte.costo|float) }}</td>
+                            <td>{{ deporte.duracion_minutos }} minutos</td>
+                            <td>
+                                <span class="estado-insignia {% if deporte.activo %}estado-activo{% else %}estado-inactivo{% endif %}">
+                                    {% if deporte.activo %}Activo{% else %}Inactivo{% endif %}
+                                </span>
+                            </td>
+                            <td>
+                                <form method="post" action="{{ url_for('actualizar_estado_deporte', sport_id=deporte.id) }}">
+                                    <input type="hidden" name="activo" value="{{ 'false' if deporte.activo else 'true' }}">
+                                    <button type="submit" class="boton-estado {% if deporte.activo %}boton-desactivar{% else %}boton-activar{% endif %}">
+                                        {% if deporte.activo %}Desactivar{% else %}Activar{% endif %}
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="estado">No existen deportes registrados.</div>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="contenedor">
+            <p>© 2026 SportsInfo - Proyecto de Sistemas de Información 2</p>
+        </div>
+    </footer>
+</body>
+
+</html>

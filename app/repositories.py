@@ -33,6 +33,7 @@ LOCAL_DEPORTE_DATA = [
             "Mantener una buena hidratación.",
         ],
         "imagen_url": None,
+        "activo": True,
     },
     {
         "id": "baloncesto",
@@ -49,6 +50,7 @@ LOCAL_DEPORTE_DATA = [
             "Usar calzado con buen soporte.",
         ],
         "imagen_url": None,
+        "activo": True,
     },
     {
         "id": "natacion",
@@ -65,6 +67,7 @@ LOCAL_DEPORTE_DATA = [
             "Respetar las normas de seguridad de la piscina.",
         ],
         "imagen_url": None,
+        "activo": True,
     },
     {
         "id": "tenis",
@@ -81,6 +84,7 @@ LOCAL_DEPORTE_DATA = [
             "Realizar pausas de recuperación durante la sesión.",
         ],
         "imagen_url": None,
+        "activo": True,
     },
 ]
 
@@ -115,19 +119,38 @@ def normalize_deporte(row: dict[str, Any]) -> dict[str, Any]:
     normalized["equipamiento"] = _as_list(normalized.get("equipamiento"))
     normalized["recomendaciones"] = _as_list(normalized.get("recomendaciones"))
     normalized["imagen_url"] = normalized.get("imagen_url")
+    active_value = normalized.get("activo", True)
+    if isinstance(active_value, str):
+        normalized["activo"] = active_value.strip().lower() not in {"false", "0", "no", ""}
+    else:
+        normalized["activo"] = bool(active_value)
     return normalized
 
 
 class LocalRepository:
     """Repositorio de demostración para desarrollo sin Supabase."""
 
-    def list_all(self) -> list[dict[str, Any]]:
-        return deepcopy(LOCAL_DEPORTE_DATA)
+    def list_all(self, include_inactive: bool = False) -> list[dict[str, Any]]:
+        sports = LOCAL_DEPORTE_DATA
+        if not include_inactive:
+            sports = [sport for sport in sports if sport.get("activo", True)]
+        return deepcopy(sports)
 
     def get_by_ids(self, ids: Iterable[str]) -> list[dict[str, Any]]:
         requested = [str(value) for value in ids]
         by_id = {sport["id"]: sport for sport in LOCAL_DEPORTE_DATA}
-        return [deepcopy(by_id[sport_id]) for sport_id in requested if sport_id in by_id]
+        return [
+            deepcopy(by_id[sport_id])
+            for sport_id in requested
+            if sport_id in by_id and by_id[sport_id].get("activo", True)
+        ]
+
+    def set_active(self, sport_id: str, active: bool) -> dict[str, Any] | None:
+        for sport in LOCAL_DEPORTE_DATA:
+            if sport["id"] == sport_id:
+                sport["activo"] = active
+                return deepcopy(sport)
+        return None
 
 
 class SupabaseRepository:
@@ -143,14 +166,11 @@ class SupabaseRepository:
 
         self.client = create_client(url, key)
 
-    def list_all(self) -> list[dict[str, Any]]:
-        response = (
-            self.client.table("deportes")
-            .select("*")
-            .eq("activo", True)
-            .order("nombre")
-            .execute()
-        )
+    def list_all(self, include_inactive: bool = False) -> list[dict[str, Any]]:
+        query = self.client.table("deportes").select("*")
+        if not include_inactive:
+            query = query.eq("activo", True)
+        response = query.order("nombre").execute()
         return [normalize_deporte(row) for row in (response.data or [])]
 
     def get_by_ids(self, ids: Iterable[str]) -> list[dict[str, Any]]:
@@ -168,12 +188,24 @@ class SupabaseRepository:
         by_id = {str(row.get("id")): normalize_deporte(row) for row in (response.data or [])}
         return [by_id[sport_id] for sport_id in requested if sport_id in by_id]
 
+    def set_active(self, sport_id: str, active: bool) -> dict[str, Any] | None:
+        response = (
+            self.client.table("deportes")
+            .update({"activo": active})
+            .eq("id", sport_id)
+            .select("*")
+            .execute()
+        )
+        if not response.data:
+            return None
+        return normalize_deporte(response.data[0])
+
 
 def get_repository() -> LocalRepository | SupabaseRepository:
     """Devuelve Supabase si está configurado; local en caso contrario."""
 
     url = os.getenv("SUPABASE_URL", "").strip()
-    key = os.getenv("SUPABASE_KEY", "").strip()
+    key = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "").strip() or os.getenv("SUPABASE_KEY", "").strip()
     if url and key:
         return SupabaseRepository(url, key)
     return LocalRepository()
