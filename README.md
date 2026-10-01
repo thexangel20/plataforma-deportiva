@@ -31,6 +31,9 @@ permanece almacenado y los módulos públicos solo consultan deportes activos.
 La HU24 agrega `/admin` y `/admin/resumen`, con totales del catálogo, estados
 activo/inactivo y distribución por nivel de costo calculados desde la información actual.
 
+La HU25 agrega una URL pública única por deporte en `/deporte/<id>`, con detalle
+completo y botón para compartir o copiar el enlace.
+
 ### Ejecución local
 
 ```bash

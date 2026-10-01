@@ -32,6 +32,29 @@ def inicio():
     return render_template("index.html", deportes=deportes, error=error)
 
 
+@app.route("/deporte/<sport_id>")
+def detalle_deporte(sport_id: str):
+    """Página pública estable para compartir un deporte activo."""
+
+    try:
+        deportes = get_repository().get_by_ids([sport_id])
+    except RepositoryError:
+        return render_template(
+            "detalle_deporte.html",
+            deporte=None,
+            error="No fue posible consultar el deporte.",
+        ), 503
+
+    if not deportes:
+        return render_template(
+            "detalle_deporte.html",
+            deporte=None,
+            error="El deporte no existe o no está disponible actualmente.",
+        ), 404
+
+    return render_template("detalle_deporte.html", deporte=deportes[0], error=None)
+
+
 @app.route("/comparar")
 def comparar():
     selected_ids = _selected_ids()

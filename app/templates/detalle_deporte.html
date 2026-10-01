@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ deporte.nombre if deporte else 'Deporte no disponible' }} | SportsInfo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <header class="header">
+        <div class="contenedor">
+            <a href="{{ url_for('inicio') }}" class="logo">SportsInfo</a>
+            <nav class="navegacion" aria-label="Navegación principal">
+                <a href="{{ url_for('inicio') }}">Inicio</a>
+                <a href="{{ url_for('inicio') }}#deportes">Deportes</a>
+                <a href="{{ url_for('recomendar') }}">Recomendar</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="pagina-detalle">
+        <div class="contenedor">
+            <a href="{{ url_for('inicio') }}#deportes" class="volver">← Volver al catálogo</a>
+
+            {% if error %}
+            <div class="estado estado-error detalle-error" role="alert">
+                {{ error }}
+            </div>
+            {% else %}
+            <article class="detalle-deporte">
+                <div class="detalle-cabecera">
+                    <div class="detalle-icono" aria-hidden="true">{{ deporte.icono }}</div>
+                    <div>
+                        <p class="detalle-etiqueta">Información del deporte</p>
+                        <h1>{{ deporte.nombre }}</h1>
+                        <p class="detalle-descripcion">{{ deporte.descripcion }}</p>
+                    </div>
+                </div>
+
+                <div class="detalle-datos">
+                    <div class="dato-deporte">
+                        <span>Objetivo</span>
+                        <strong>{{ deporte.objetivo }}</strong>
+                    </div>
+                    <div class="dato-deporte">
+                        <span>Costo estimado</span>
+                        <strong>{{ deporte.moneda }} {{ "%.2f"|format(deporte.costo|float) }}</strong>
+                    </div>
+                    <div class="dato-deporte">
+                        <span>Duración recomendada</span>
+                        <strong>{{ deporte.duracion_minutos }} minutos</strong>
+                    </div>
+                </div>
+
+                <div class="detalle-columnas">
+                    <section>
+                        <h2>Equipamiento requerido</h2>
+                        <ul class="lista-detalle">
+                            {% for item in deporte.equipamiento %}<li>{{ item }}</li>{% endfor %}
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Recomendaciones</h2>
+                        <ul class="lista-detalle">
+                            {% for item in deporte.recomendaciones %}<li>{{ item }}</li>{% endfor %}
+                        </ul>
+                    </section>
+                </div>
+
+                <div class="acciones-detalle">
+                    <button type="button" class="boton" data-share-button data-share-url="{{ request.url }}">
+                        Compartir deporte
+                    </button>
+                    <span class="mensaje-compartir" data-share-message role="status" aria-live="polite"></span>
+                </div>
+            </article>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="contenedor">
+            <p>© 2026 SportsInfo - Proyecto de Sistemas de Información 2</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/share.js') }}"></script>
+</body>
+
+</html>

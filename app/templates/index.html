@@ -68,6 +68,7 @@
                                 <span><strong>Costo:</strong> {{ deporte.moneda }} {{ "%.2f"|format(deporte.costo|float) }}</span>
                                 <span><strong>Duración:</strong> {{ deporte.duracion_minutos }} min</span>
                             </div>
+                            <a class="enlace-tarjeta" href="{{ url_for('detalle_deporte', sport_id=deporte.id) }}">Ver información</a>
                         </article>
                         {% endfor %}
                     </div>
