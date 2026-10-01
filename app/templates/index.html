@@ -16,6 +16,7 @@
                 <a href="{{ url_for('inicio') }}">Inicio</a>
                 <a href="#deportes">Deportes</a>
                 <a href="#sobre-nosotros">Sobre nosotros</a>
+                <a href="{{ url_for('recomendar') }}">Recomendar</a>
             </nav>
         </div>
     </header>
@@ -28,7 +29,7 @@
                     Encuentra información sobre diferentes deportes, sus costos,
                     duración, equipamiento, alimentación y recomendaciones.
                 </p>
-                <a href="#deportes" class="boton">Explorar deportes</a>
+                <a href="{{ url_for('recomendar') }}" class="boton">Encontrar mi deporte</a>
             </div>
         </section>
 

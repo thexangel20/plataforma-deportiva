@@ -21,6 +21,9 @@ La aplicación permite seleccionar dos o más deportes desde el catálogo y
 compararlos en `/comparar`, mostrando objetivo, costo, duración, equipamiento y
 recomendaciones. También permite quitar deportes de la comparación.
 
+La HU22 agrega `/recomendar`, donde el visitante indica costo, objetivo y
+tiempo disponible para recibir recomendaciones adaptadas a sus preferencias.
+
 ### Ejecución local
 
 ```bash

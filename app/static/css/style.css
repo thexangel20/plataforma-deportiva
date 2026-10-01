@@ -235,6 +235,77 @@ body {
     background: #fff;
 }
 
+.pagina-recomendacion {
+    min-height: calc(100vh - 170px);
+    padding: 55px 0 75px;
+    background: #fff;
+}
+
+.pagina-recomendacion h1 {
+    margin: 22px 0 10px;
+    text-align: center;
+    font-size: 38px;
+}
+
+.form-preferencias {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) auto;
+    align-items: end;
+    gap: 18px;
+    margin: 35px 0 45px;
+    padding: 25px;
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
+    background: #eff6ff;
+}
+
+.campo-formulario {
+    display: grid;
+    gap: 8px;
+}
+
+.campo-formulario label {
+    color: #1f2937;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.campo-formulario select {
+    min-height: 44px;
+    padding: 0 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: white;
+    color: #1f2937;
+    font-size: 15px;
+}
+
+.resultados-recomendacion h2 {
+    margin: 0 0 10px;
+    text-align: center;
+    font-size: 30px;
+}
+
+.tarjetas-recomendadas {
+    margin-top: 25px;
+}
+
+.tarjeta-recomendada {
+    border-color: #93c5fd;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+}
+
+.tarjeta-recomendada .enlace-tarjeta {
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.estado-sin-resultados {
+    margin-top: 25px;
+    border-color: #fde68a;
+    background: #fffbeb;
+}
+
 .pagina-comparacion h1 {
     margin: 22px 0 10px;
     text-align: center;
@@ -429,6 +500,15 @@ body {
 
     .barra-comparacion .boton {
         width: 100%;
+    }
+
+    .form-preferencias {
+        grid-template-columns: 1fr;
+    }
+
+    .pagina-recomendacion h1 {
+        font-size: 32px;
+        text-align: left;
     }
 
     .pagina-comparacion {

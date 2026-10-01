@@ -3,6 +3,7 @@ from __future__ import annotations
 from flask import render_template, request
 
 from app import app
+from app.recommendations import available_objectives, recommend_deportes
 from app.repositories import RepositoryError, get_repository
 
 
@@ -57,3 +58,56 @@ def comparar():
         ), 404
 
     return render_template("comparar.html", deportes=deportes, error=None)
+
+
+@app.route("/recomendar", methods=["GET", "POST"])
+def recomendar():
+    error = None
+    enviado = request.method == "POST"
+    preferencias = {
+        "costo": request.form.get("costo", "").strip().lower(),
+        "objetivo": request.form.get("objetivo", "").strip(),
+        "tiempo": request.form.get("tiempo", "").strip(),
+    }
+    recomendaciones = []
+
+    try:
+        deportes = get_repository().list_all()
+        objetivos = available_objectives(deportes)
+    except RepositoryError:
+        deportes = []
+        objetivos = []
+        error = "No fue posible cargar las preferencias. Intenta nuevamente más tarde."
+
+    if enviado and not error:
+        tiempo = None
+        if preferencias["tiempo"]:
+            try:
+                tiempo = int(preferencias["tiempo"])
+            except ValueError:
+                error = "Selecciona un tiempo disponible válido."
+            if tiempo is not None and tiempo <= 0:
+                error = "El tiempo disponible debe ser mayor que cero."
+
+        if preferencias["costo"] and preferencias["costo"] not in {"bajo", "medio", "alto"}:
+            error = "Selecciona un nivel de costo válido."
+
+        if preferencias["objetivo"] and preferencias["objetivo"] not in objetivos:
+            error = "Selecciona un objetivo disponible en la lista."
+
+        if not error:
+            recomendaciones = recommend_deportes(
+                deportes,
+                costo=preferencias["costo"],
+                objetivo=preferencias["objetivo"],
+                tiempo=tiempo,
+            )
+
+    return render_template(
+        "recomendar.html",
+        objetivos=objetivos,
+        preferencias=preferencias,
+        recomendaciones=recomendaciones,
+        enviado=enviado,
+        error=error,
+    ), 400 if error and enviado else 200

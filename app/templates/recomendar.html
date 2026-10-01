@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recomendar deportes | SportsInfo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <header class="header">
+        <div class="contenedor">
+            <a href="{{ url_for('inicio') }}" class="logo">SportsInfo</a>
+            <nav class="navegacion" aria-label="Navegación principal">
+                <a href="{{ url_for('inicio') }}">Inicio</a>
+                <a href="{{ url_for('inicio') }}#deportes">Deportes</a>
+                <a href="{{ url_for('comparar') }}">Comparar</a>
+                <a href="{{ url_for('recomendar') }}" aria-current="page">Recomendar</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="pagina-recomendacion">
+        <div class="contenedor">
+            <a href="{{ url_for('inicio') }}" class="volver">← Volver al inicio</a>
+            <h1>Encuentra tu deporte ideal</h1>
+            <p class="descripcion-seccion">
+                Cuéntanos qué necesitas y te mostraremos las opciones que mejor se ajustan.
+            </p>
+
+            <form method="post" action="{{ url_for('recomendar') }}" class="form-preferencias">
+                <div class="campo-formulario">
+                    <label for="costo">Nivel de costo</label>
+                    <select id="costo" name="costo">
+                        <option value="">Cualquier costo</option>
+                        <option value="bajo" {% if preferencias.costo == 'bajo' %}selected{% endif %}>Bajo (hasta Bs. 150)</option>
+                        <option value="medio" {% if preferencias.costo == 'medio' %}selected{% endif %}>Medio (Bs. 151–250)</option>
+                        <option value="alto" {% if preferencias.costo == 'alto' %}selected{% endif %}>Alto (más de Bs. 250)</option>
+                    </select>
+                </div>
+
+                <div class="campo-formulario">
+                    <label for="objetivo">Objetivo deportivo</label>
+                    <select id="objetivo" name="objetivo">
+                        <option value="">Cualquier objetivo</option>
+                        {% for objetivo in objetivos %}
+                        <option value="{{ objetivo }}" {% if preferencias.objetivo == objetivo %}selected{% endif %}>{{ objetivo }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo-formulario">
+                    <label for="tiempo">Tiempo disponible</label>
+                    <select id="tiempo" name="tiempo">
+                        <option value="">Cualquier duración</option>
+                        <option value="30" {% if preferencias.tiempo == '30' %}selected{% endif %}>Hasta 30 minutos</option>
+                        <option value="60" {% if preferencias.tiempo == '60' %}selected{% endif %}>Hasta 60 minutos</option>
+                        <option value="90" {% if preferencias.tiempo == '90' %}selected{% endif %}>Hasta 90 minutos</option>
+                        <option value="120" {% if preferencias.tiempo == '120' %}selected{% endif %}>Hasta 120 minutos</option>
+                        <option value="180" {% if preferencias.tiempo == '180' %}selected{% endif %}>Hasta 180 minutos</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="boton">Obtener recomendaciones</button>
+            </form>
+
+            {% if error %}
+            <div class="estado estado-error" role="alert">{{ error }}</div>
+            {% elif enviado %}
+                {% if recomendaciones %}
+                <section class="resultados-recomendacion" aria-labelledby="titulo-resultados">
+                    <h2 id="titulo-resultados">Deportes recomendados</h2>
+                    <p class="descripcion-seccion">Encontramos {{ recomendaciones|length }} opción{% if recomendaciones|length != 1 %}es{% endif %} para tus preferencias.</p>
+                    <div class="tarjetas-deportes tarjetas-recomendadas">
+                        {% for deporte in recomendaciones %}
+                        <article class="tarjeta-deporte tarjeta-recomendada">
+                            <div class="icono-deporte" aria-hidden="true">{{ deporte.icono }}</div>
+                            <h3>{{ deporte.nombre }}</h3>
+                            <p>{{ deporte.descripcion }}</p>
+                            <div class="resumen-deporte">
+                                <span><strong>Costo:</strong> {{ deporte.moneda }} {{ "%.2f"|format(deporte.costo|float) }}</span>
+                                <span><strong>Duración:</strong> {{ deporte.duracion_minutos }} min</span>
+                                <span><strong>Objetivo:</strong> {{ deporte.objetivo }}</span>
+                            </div>
+                            <a class="enlace-tarjeta" href="{{ url_for('inicio') }}#deportes">Ver en el catálogo</a>
+                        </article>
+                        {% endfor %}
+                    </div>
+                </section>
+                {% else %}
+                <div class="estado estado-sin-resultados" role="status">
+                    <h2>No encontramos coincidencias</h2>
+                    <p>Prueba con un nivel de costo, objetivo o tiempo disponible diferente.</p>
+                </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="contenedor">
+            <p>© 2026 SportsInfo - Proyecto de Sistemas de Información 2</p>
+        </div>
+    </footer>
+</body>
+
+</html>
