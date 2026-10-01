@@ -67,7 +67,12 @@
 
               <p>Tiempo recomendado: {{ deporte["tiempo"] }}</p>
 
-              <a href="#" class="enlace-tarjeta"> Ver información </a>
+              <a
+                href="{{ url_for('detalle_us2', nombre=deporte['nombre']) }}"
+                class="enlace-tarjeta"
+              >
+                Ver información
+              </a>
             </article>
 
             {% endfor %}

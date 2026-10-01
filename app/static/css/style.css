@@ -261,3 +261,131 @@ body {
     height: 160px;
     }
 }
+
+/* ========================================
+DETALLE DEL DEPORTE - US2
+======================================== */
+
+.detalle-deporte {
+    padding: 60px 20px;
+    background-color: #f5f7fa;
+}
+
+.detalle-encabezado {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.detalle-imagen {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.detalle-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.detalle-titulo h1 {
+    margin: 0 0 15px 0;
+    font-size: 42px;
+}
+
+.detalle-titulo p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.detalle-informacion,
+.detalle-seccion {
+    margin-bottom: 25px;
+    padding: 30px;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.detalle-informacion h2,
+.detalle-seccion h2 {
+    margin: 0 0 20px 0;
+    font-size: 26px;
+}
+
+.informacion-datos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.dato-deporte {
+    padding: 20px;
+    background-color: #f8fafc;
+    border-radius: 8px;
+}
+
+.dato-deporte h3 {
+    margin: 0 0 10px 0;
+    font-size: 17px;
+}
+
+.dato-deporte p {
+    margin: 0;
+    color: #2563eb;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.detalle-seccion p {
+    margin: 0;
+    color: #6b7280;
+    line-height: 1.7;
+}
+
+.lista-recomendaciones {
+    margin: 0;
+    padding-left: 25px;
+    color: #6b7280;
+    line-height: 1.8;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 700px) {
+
+    .detalle-deporte {
+        padding: 40px 20px;
+    }
+
+    .detalle-encabezado {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .detalle-imagen {
+        height: 220px;
+    }
+
+    .detalle-titulo h1 {
+        font-size: 34px;
+    }
+
+    .informacion-datos {
+        grid-template-columns: 1fr;
+    }
+
+    .detalle-informacion,
+    .detalle-seccion {
+        padding: 25px;
+    }
+
+}

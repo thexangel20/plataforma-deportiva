@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Detalle del deporte | SportsInfo</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+
+  <body>
+    <!-- ENCABEZADO -->
+
+    <header class="header">
+      <div class="contenedor">
+        <a href="/" class="logo"> SportsInfo </a>
+
+        <nav class="navegacion">
+          <a href="/"> Inicio </a>
+
+          <a href="/#deportes"> Deportes </a>
+
+          <a href="/#sobre-nosotros"> Sobre nosotros </a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- DETALLE DEL DEPORTE -->
+
+    <main>
+      <section class="detalle-deporte">
+        <div class="contenedor">
+          <!-- ENCABEZADO DEL DETALLE -->
+
+          <div class="detalle-encabezado">
+            <div class="detalle-imagen">
+              <img
+                src="{{ url_for('static', filename='images/' + deporte['imagen']) }}"
+                alt="{{ deporte['nombre'] }}"
+              />
+            </div>
+
+            <div class="detalle-titulo">
+              <h1>{{ deporte["nombre"] }}</h1>
+
+              <p>Información para comenzar a practicar este deporte.</p>
+            </div>
+          </div>
+
+          <!-- INFORMACIÓN GENERAL -->
+
+          <div class="detalle-informacion">
+            <h2>Información general</h2>
+
+            <div class="informacion-datos">
+              <div class="dato-deporte">
+                <h3>Costo estimado</h3>
+
+                <p>{{ deporte["costo"] }}</p>
+              </div>
+
+              <div class="dato-deporte">
+                <h3>Tiempo recomendado</h3>
+
+                <p>{{ deporte["tiempo"] }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- DIETA -->
+
+          <div class="detalle-seccion">
+            <h2>Dieta sugerida</h2>
+            <p>
+              {% if deporte["dieta"] %} {{ deporte["dieta"] }} {% else %}
+              Información de dieta no disponible por el momento. {% endif %}
+            </p>
+          </div>
+
+          <!-- RECOMENDACIONES -->
+
+          <div class="detalle-seccion">
+            <h2>Recomendaciones para comenzar</h2>
+            <ul class="lista-recomendaciones">
+              {% if deporte["recomendaciones"] %} {% for recomendacion in
+              deporte["recomendaciones"] %}
+
+              <li>{{ recomendacion }}</li>
+
+              {% endfor %} {% else %}
+
+              <li>No hay recomendaciones registradas por el momento.</li>
+
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+
+    <footer class="footer">
+      <div class="contenedor">
+        <p>© 2026 SportsInfo - Proyecto de Sistemas de Información 2</p>
+      </div>
+    </footer>
+  </body>
+</html>
