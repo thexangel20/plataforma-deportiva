@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificador | SportsInfo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="contenedor">
+            <a href="/" class="logo">SportsInfo</a>
+            <nav class="navegacion">
+                <a href="/">Inicio</a>
+                <a href="/planificador">Planificador</a>
+                <a href="#sobre-nosotros">Sobre nosotros</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="hero">
+            <div class="contenedor">
+                <h1>Planificador de entrenamiento</h1>
+                <p>
+                    Ingresa tu nivel, objetivo y disponibilidad para
+                    obtener una distribución semanal de entrenamiento.
+                </p>
+            </div>
+        </section>
+
+        <section class="seccion-planificador">
+            <div class="contenedor">
+                <h2>Datos del plan</h2>
+
+                <form method="POST" class="formulario-planificador">
+
+                    <div class="campo">
+                        <label for="nivel">Nivel de experiencia:</label>
+                        <select name="nivel" id="nivel" required>
+                            <option value="principiante">Principiante</option>
+                            <option value="intermedio">Intermedio</option>
+                            <option value="avanzado">Avanzado</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="objetivo">Objetivo deportivo:</label>
+                        <select name="objetivo" id="objetivo" required>
+                            <option value="recreativo">Recreativo</option>
+                            <option value="salud">Salud</option>
+                            <option value="competitivo">Competitivo</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="dias">Días disponibles por semana:</label>
+                        <input type="number" name="dias" id="dias" min="1" max="7" value="3" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="horas">Horas libres por día:</label>
+                        <input type="number" name="horas" id="horas" min="0.5" max="6" step="0.5" value="1" required>
+                    </div>
+
+                    <button type="submit" class="boton">Generar plan</button>
+
+                </form>
+
+                {% if resultado %}
+                <div class="resultado-temporal">
+                    <h3>Datos recibidos (prueba):</h3>
+                    <ul>
+                        <li>Nivel: {{ resultado.nivel }}</li>
+                        <li>Objetivo: {{ resultado.objetivo }}</li>
+                        <li>Días: {{ resultado.dias }}</li>
+                        <li>Horas por día: {{ resultado.horas }}</li>
+                    </ul>
+                </div>
+                {% endif %}
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="contenedor">
+            <p>© 2026 SportsInfo - Proyecto de Sistemas de Información 2</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
