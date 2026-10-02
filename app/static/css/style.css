@@ -241,3 +241,209 @@ body {
         grid-template-columns: 1fr;
     }
 }
+/* ============================================== */
+/* ESTILOS DEL PLANIFICADOR                       */
+/* ============================================== */
+
+.seccion-planificador {
+    padding: 3rem 0;
+    background: #f8f9fb;
+}
+
+.formulario-planificador {
+    max-width: 500px;
+    margin: 0 auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.campo {
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.campo label {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: #1e293b;
+}
+
+.campo select,
+.campo input {
+    padding: 0.7rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.campo select:focus,
+.campo input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Botón del formulario */
+.formulario-planificador .boton {
+    width: 100%;
+    padding: 0.9rem;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.formulario-planificador .boton:hover {
+    background: #1d4ed8;
+}
+
+/* Resultado del plan */
+.resultado-plan {
+    max-width: 900px;
+    margin: 2rem auto 0;
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.resultado-plan h2 {
+    margin-bottom: 1.5rem;
+    color: #1e293b;
+}
+
+.resultado-plan h3 {
+    margin: 2rem 0 1rem;
+    color: #1e293b;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 0.5rem;
+}
+
+/* Resumen del plan */
+.resumen-plan {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.resumen-item {
+    background: #f1f5f9;
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.resumen-label {
+    font-size: 0.8rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.4rem;
+}
+
+.resumen-valor {
+    font-size: 1.15rem;
+    color: #1e293b;
+}
+
+/* Tabla de distribución */
+.tabla-plan {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+}
+
+.tabla-plan th,
+.tabla-plan td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.tabla-plan th {
+    background: #f1f5f9;
+    font-weight: 600;
+    color: #475569;
+}
+
+.dia-entrena {
+    background: #ecfdf5;
+}
+
+.dia-descanso {
+    background: #fafafa;
+    color: #94a3b8;
+}
+
+/* Advertencias */
+.advertencias {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.advertencia {
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid;
+    font-size: 0.95rem;
+}
+
+.advertencia-warning {
+    background: #fffbeb;
+    border-color: #f59e0b;
+    color: #78350f;
+}
+
+.advertencia-info {
+    background: #eff6ff;
+    border-color: #3b82f6;
+    color: #1e3a8a;
+}
+
+.advertencia-success {
+    background: #ecfdf5;
+    border-color: #10b981;
+    color: #064e3b;
+}
+
+/* Recomendaciones */
+.recomendaciones {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.recomendaciones li {
+    padding: 0.75rem 1rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    border-left: 3px solid #2563eb;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .formulario-planificador,
+    .resultado-plan {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .tabla-plan th,
+    .tabla-plan td {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+}
