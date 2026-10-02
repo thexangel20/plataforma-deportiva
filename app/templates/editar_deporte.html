@@ -1,39 +1,154 @@
-{% extends 'base_reportes.html' %}
-{% block titulo %}Editar {{ deporte.nombre }}{% endblock %}
-{% block contenido %}
+{% extends 'base_reportes.html' %} {% block titulo %}{{ 'Registrar deporte' if
+not deporte else 'Editar ' ~ deporte.nombre }}{% endblock %} {% block contenido
+%}
 <section class="panel">
-    <h1>Editar deporte</h1>
-    <form method="post" enctype="multipart/form-data">
-        <input type="hidden" name="csrf" value="{{ obtener_csrf() }}">
-        <label for="nombre">Nombre</label>
-        <input id="nombre" name="nombre" value="{{ deporte.nombre }}" maxlength="100" required>
-        <label for="costo_estimado">Costo estimado</label>
-        <input id="costo_estimado" name="costo_estimado" type="number" min="0" max="99999999.99" step="0.01" value="{{ deporte.costo_estimado if deporte.costo_estimado is not none else '' }}">
-        <p>Déjalo vacío si todavía no se conoce el costo.</p>
-        <label for="moneda">Moneda</label>
-        <input id="moneda" name="moneda" value="{{ deporte.moneda }}" maxlength="3" minlength="3" required>
-        <label for="periodo_costo">Período del costo</label>
-        <input id="periodo_costo" name="periodo_costo" value="{{ deporte.periodo_costo }}" maxlength="100" placeholder="Por mes, por sesión, inversión inicial…">
-        <fieldset class="condiciones-practica">
-            <legend>Condiciones y espacios de práctica</legend>
-            {% for campo, opciones in opciones_condiciones.items() %}
-            <label for="{{ campo }}">{{ etiquetas_condiciones[campo] }}</label>
-            <select id="{{ campo }}" name="{{ campo }}">
-                {% for valor, etiqueta in opciones.items() %}
-                <option value="{{ valor }}" {% if (deporte.get(campo) or '') == valor %}selected{% endif %}>{{ etiqueta }}</option>
-                {% endfor %}
-            </select>
-            {% endfor %}
-        </fieldset>
-        {% for campo, etiqueta in campos.items() %}
-        <label for="{{ campo }}">{{ etiqueta }}</label>
-        <textarea id="{{ campo }}" name="{{ campo }}" rows="4" maxlength="3000">{{ deporte.get(campo) or '' }}</textarea>
+  <h1>{{ 'Registrar nuevo deporte' if not deporte else 'Editar deporte' }}</h1>
+  <form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="csrf" value="{{ obtener_csrf() }}" />
+
+    <h2>Información básica</h2>
+
+    <label for="nombre">Nombre</label>
+    <input
+      id="nombre"
+      name="nombre"
+      value="{{ deporte.nombre }}"
+      maxlength="100"
+      required
+    />
+
+    <label for="costo_estimado">Costo estimado</label>
+    <input
+      id="costo_estimado"
+      name="costo_estimado"
+      type="number"
+      min="0"
+      max="99999999.99"
+      step="0.01"
+      value="{{ deporte.costo_estimado if deporte.costo_estimado is not none else '' }}"
+    />
+
+    <p>Déjalo vacío si todavía no se conoce el costo.</p>
+
+    <label for="moneda">Moneda</label>
+    <input
+      id="moneda"
+      name="moneda"
+      value="{{ deporte.moneda }}"
+      maxlength="3"
+      minlength="3"
+      required
+    />
+
+    <label for="periodo_costo">Período del costo</label>
+    <input
+      id="periodo_costo"
+      name="periodo_costo"
+      value="{{ deporte.periodo_costo }}"
+      maxlength="100"
+      placeholder="Por mes, por sesión, inversión inicial…"
+    />
+
+    <label for="tiempo_practica">Tiempo de práctica</label>
+    <input
+      id="tiempo_practica"
+      name="tiempo_practica"
+      type="number"
+      min="10"
+      max="240"
+      value="{{ deporte.tiempo_practica }}"
+      required
+    />
+
+    <p>
+      Indica el tiempo aproximado de práctica en minutos. Debe estar entre 10 y
+      240 minutos.
+    </p>
+
+    <h2>Condiciones de práctica</h2>
+
+    <fieldset class="condiciones-practica">
+      <legend>Condiciones y espacios de práctica</legend>
+
+      {% for campo, opciones in opciones_condiciones.items() %}
+
+      <label for="{{ campo }}"> {{ etiquetas_condiciones[campo] }} </label>
+
+      <select
+        id="{{ campo }}"
+        name="{{ campo }}"
+        {%
+        if
+        campo=""
+        ="espacio_practica"
+        %}required{%
+        endif
+        %}
+      >
+        {% for valor, etiqueta in opciones.items() %}
+        <option
+          value="{{ valor }}"
+          {%
+          if
+          deporte.get(campo)=""
+          ="valor"
+          %}selected{%
+          endif
+          %}
+        >
+          {{ etiqueta }}
+        </option>
         {% endfor %}
-        {% if deporte.imagen_ruta %}<img class="imagen-deporte" src="{{ direccion_imagen(deporte.imagen_ruta) }}" alt="Imagen actual de {{ deporte.nombre }}">{% endif %}
-        <label for="imagen">Reemplazar imagen</label>
-        <input id="imagen" name="imagen" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="ayuda-imagen">
-        <p id="ayuda-imagen">JPEG, PNG o WebP; hasta 5 MB y 16 millones de píxeles. Sin archivo nuevo se conserva la imagen actual.</p>
-        <div class="acciones"><button class="boton" type="submit">Guardar cambios</button><a href="{{ url_for('administrar_deportes') }}">Cancelar</a></div>
-    </form>
+      </select>
+
+      {% endfor %}
+    </fieldset>
+
+    <h2>Información del deporte</h2>
+
+    {% for campo, etiqueta in campos.items() %} {% if campo != 'tiempo_practica'
+    %}
+
+    <label for="{{ campo }}"> {{ etiqueta }} </label>
+
+    <textarea id="{{ campo }}" name="{{ campo }}" rows="4" maxlength="3000">
+{{ deporte.get(campo) or '' }}</textarea
+    >
+
+    {% endif %} {% endfor %}
+
+    <h2>Imagen</h2>
+
+    {% if deporte.imagen_ruta %}
+    <img
+      class="imagen-deporte"
+      src="{{ direccion_imagen(deporte.imagen_ruta) }}"
+      alt="Imagen actual de {{ deporte.nombre }}"
+    />
+    {% endif %}
+
+    <label for="imagen">Reemplazar imagen</label>
+
+    <input
+      id="imagen"
+      name="imagen"
+      type="file"
+      accept="image/jpeg,image/png,image/webp"
+      aria-describedby="ayuda-imagen"
+    />
+
+    <p id="ayuda-imagen">
+      JPEG, PNG o WebP; hasta 5 MB y 16 millones de píxeles. Sin archivo nuevo
+      se conserva la imagen actual.
+    </p>
+
+    <div class="acciones">
+      <button class="boton" type="submit">
+        {{ 'Registrar deporte' if not deporte else 'Guardar cambios' }}
+      </button>
+
+      <a href="{{ url_for('administrar_deportes') }}"> Cancelar </a>
+    </div>
+  </form>
 </section>
 {% endblock %}
