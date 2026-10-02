@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desgaste de Equipamiento | SportsInfo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="contenedor">
+            <a href="/" class="logo">SportsInfo</a>
+            <nav class="navegacion">
+                <a href="/">Inicio</a>
+                <a href="/planificador">Planificador</a>
+                <a href="/dieta">Dieta</a>
+                <a href="/optimizador">Optimizador</a>
+                <a href="/desgaste">Desgaste</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="hero">
+            <div class="contenedor">
+                <h1>Desgaste de Equipamiento</h1>
+                <p>
+                    Calcula la vida útil y el costo de reemplazo de tu equipamiento
+                    según tu frecuencia de uso semanal.
+                </p>
+            </div>
+        </section>
+
+        <section class="seccion-planificador">
+            <div class="contenedor">
+                <h2>Datos del implemento</h2>
+
+                <form method="POST" class="formulario-planificador">
+
+                    <div class="campo">
+                        <label for="deporte">Deporte:</label>
+                        <select name="deporte" id="deporte" required onchange="actualizarImplementos()">
+                            <option value="futbol">⚽ Fútbol</option>
+                            <option value="baloncesto">🏀 Baloncesto</option>
+                            <option value="natacion">🏊 Natación</option>
+                            <option value="tenis">🎾 Tenis</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="implemento">Implemento:</label>
+                        <select name="implemento" id="implemento" required onchange="actualizarVidaUtil()">
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="precio">Precio del implemento (Bs):</label>
+                        <input type="number" name="precio" id="precio"
+                               min="1" max="10000" step="0.01" value="800" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="vida_util_base">Vida útil base (meses, uso 3×/semana):</label>
+                        <input type="number" name="vida_util_base" id="vida_util_base"
+                               min="1" max="120" value="12" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="frecuencia">Frecuencia de uso semanal:</label>
+                        <input type="number" name="frecuencia" id="frecuencia"
+                               min="1" max="7" value="3" required>
+                    </div>
+
+                    <button type="submit" class="boton">Calcular desgaste</button>
+
+                </form>
+
+                {% if resultado %}
+                <div class="resultado-plan">
+
+                    <h2>🔧 Análisis de Desgaste</h2>
+                    <p style="text-align: center; color: #64748b; margin-bottom: 2rem;">
+                        {{ resultado.implemento }} de {{ resultado.deporte|capitalize }}
+                    </p>
+
+                    <!-- TARJETA DE VIDA ÚTIL -->
+                    <div class="tarjeta-desgaste">
+                        <h3>📊 Vida útil</h3>
+
+                        <div class="vida-util-grid">
+                            <div class="vida-util-item">
+                                <span class="vida-util-label">Base (3×/sem)</span>
+                                <strong class="vida-util-valor">{{ resultado.vida_util_base }} meses</strong>
+                            </div>
+                            <div class="vida-util-item">
+                                <span class="vida-util-label">Tu frecuencia</span>
+                                <strong class="vida-util-valor">{{ resultado.frecuencia }}×/semana</strong>
+                            </div>
+                            <div class="vida-util-item destacado">
+                                <span class="vida-util-label">Ajustada</span>
+                                <strong class="vida-util-valor">{{ resultado.vida_util_ajustada }} meses</strong>
+                            </div>
+                        </div>
+
+                        <div class="barra-progreso-container">
+                            <div class="barra-progreso">
+                                <div class="barra-progreso-fill" style="width: 100%;"></div>
+                            </div>
+                            <span class="barra-progreso-label">100% de vida útil</span>
+                        </div>
+
+                        <div class="semaforo-desgaste semaforo-{{ resultado.nivel_desgaste.color }}">
+                            {{ resultado.nivel_desgaste.emoji }}
+                            Nivel de desgaste: <strong>{{ resultado.nivel_desgaste.nivel }}</strong>
+                        </div>
+                    </div>
+
+                    <!-- PROYECCIÓN DE GASTOS -->
+                    <h3>💰 Proyección de gastos</h3>
+
+                    <div class="proyeccion-grid">
+                        <div class="proyeccion-card">
+                            <span class="proyeccion-periodo">6 MESES</span>
+                            <strong class="proyeccion-costo">Bs {{ resultado.proyeccion_6m }}</strong>
+                            <small class="proyeccion-compras">{{ resultado.compras_6m }} compra(s)</small>
+                        </div>
+                        <div class="proyeccion-card destacado">
+                            <span class="proyeccion-periodo">1 AÑO</span>
+                            <strong class="proyeccion-costo">Bs {{ resultado.proyeccion_1a }}</strong>
+                            <small class="proyeccion-compras">{{ resultado.compras_1a }} compra(s)</small>
+                        </div>
+                        <div class="proyeccion-card">
+                            <span class="proyeccion-periodo">2 AÑOS</span>
+                            <strong class="proyeccion-costo">Bs {{ resultado.proyeccion_2a }}</strong>
+                            <small class="proyeccion-compras">{{ resultado.compras_2a }} compra(s)</small>
+                        </div>
+                    </div>
+
+                    <div class="resumen-plan" style="margin-top: 1.5rem;">
+                        <div class="resumen-item">
+                            <span class="resumen-label">Costo mensual</span>
+                            <strong class="resumen-valor">Bs {{ resultado.costo_mensual }}</strong>
+                        </div>
+                        <div class="resumen-item">
+                            <span class="resumen-label">Próximo reemplazo</span>
+                            <strong class="resumen-valor">~{{ resultado.vida_util_ajustada }} meses</strong>
+                        </div>
+                    </div>
+
+                    <!-- TRUCO: ALTERNAR 2 PARES -->
+                    <h3>✨ Truco: Alternar 2 implementos</h3>
+
+                    <table class="tabla-plan">
+                        <thead>
+                            <tr>
+                                <th>Escenario</th>
+                                <th>Vida útil</th>
+                                <th>Costo anual</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sin alternar (1 implemento)</td>
+                                <td>{{ resultado.vida_util_ajustada }} meses</td>
+                                <td>Bs {{ resultado.proyeccion_1a }}</td>
+                            </tr>
+                            <tr class="dia-entrena">
+                                <td>✅ Alternando 2 implementos</td>
+                                <td>{{ resultado.vida_con_alternar }} meses</td>
+                                <td>Bs {{ (resultado.costo_mensual_alternar * 12)|round(2) }}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr style="background: #ecfdf5; font-weight: bold;">
+                                <td colspan="2">💰 AHORRO ANUAL</td>
+                                <td>Bs {{ resultado.ahorro_anual_alternar }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <!-- ADVERTENCIAS -->
+                    <h3>💬 Advertencias</h3>
+                    <div class="advertencias">
+                        {% for a in resultado.advertencias %}
+                        <div class="advertencia advertencia-{{ a.tipo }}">
+                            {{ a.mensaje }}
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- RECOMENDACIONES -->
+                    <h3>✅ Recomendaciones</h3>
+                    <ul class="recomendaciones">
+                        {% for r in resultado.recomendaciones %}
+                        <li>{{ r }}</li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+                {% endif %}
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="contenedor">
+            <p>© 2026 SportsInfo - Proyecto de Sistemas de Información 2</p>
+        </div>
+    </footer>
+
+    <script>
+        const VIDA_UTIL = {
+            "futbol":     {"Botines": 12, "Balón": 6, "Canilleras": 24, "Guantes de arquero": 18, "Uniforme": 12},
+            "baloncesto": {"Zapatillas": 8, "Balón": 8, "Uniforme": 12, "Rodilleras": 12},
+            "natacion":   {"Traje de baño": 6, "Gorro": 4, "Gafas": 12, "Aletas": 24},
+            "tenis":      {"Raqueta": 24, "Pelotas": 2, "Zapatillas": 6, "Overgrip": 1}
+        };
+
+        function actualizarImplementos() {
+            const deporte = document.getElementById("deporte").value;
+            const select = document.getElementById("implemento");
+            select.innerHTML = "";
+
+            Object.keys(VIDA_UTIL[deporte]).forEach(function(item) {
+                const opt = document.createElement("option");
+                opt.value = item;
+                opt.textContent = item;
+                select.appendChild(opt);
+            });
+
+            actualizarVidaUtil();
+        }
+
+        function actualizarVidaUtil() {
+            const deporte = document.getElementById("deporte").value;
+            const implemento = document.getElementById("implemento").value;
+            const input = document.getElementById("vida_util_base");
+            if (VIDA_UTIL[deporte] && VIDA_UTIL[deporte][implemento]) {
+                input.value = VIDA_UTIL[deporte][implemento];
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", actualizarImplementos);
+    </script>
+
+</body>
+
+</html>

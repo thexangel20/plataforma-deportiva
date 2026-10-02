@@ -446,4 +446,165 @@ body {
         padding: 0.5rem;
         font-size: 0.9rem;
     }
+}/* ============================================== */
+/* DESGASTE DE EQUIPAMIENTO                       */
+/* ============================================== */
+
+.tarjeta-desgaste {
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: 2px solid #e2e8f0;
+}
+
+.tarjeta-desgaste h3 {
+    margin-top: 0;
+    border-bottom: none;
+}
+
+.vida-util-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.vida-util-item {
+    background: white;
+    padding: 1rem;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+}
+
+.vida-util-item.destacado {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border-color: #3b82f6;
+}
+
+.vida-util-label {
+    display: block;
+    font-size: 0.8rem;
+    color: #64748b;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+}
+
+.vida-util-valor {
+    font-size: 1.3rem;
+    color: #1e293b;
+}
+
+.vida-util-item.destacado .vida-util-valor {
+    color: #2563eb;
+}
+
+/* Barra de progreso */
+.barra-progreso-container {
+    margin: 1.5rem 0;
+}
+
+.barra-progreso {
+    height: 20px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.barra-progreso-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #34d399);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.barra-progreso-label {
+    display: block;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-top: 0.5rem;
+}
+
+/* Semáforo */
+.semaforo-desgaste {
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+.semaforo-verde    { background: #ecfdf5; color: #065f46; border: 2px solid #10b981; }
+.semaforo-amarillo { background: #fffbeb; color: #78350f; border: 2px solid #f59e0b; }
+.semaforo-naranja  { background: #fff7ed; color: #7c2d12; border: 2px solid #f97316; }
+.semaforo-rojo     { background: #fef2f2; color: #7f1d1d; border: 2px solid #ef4444; }
+
+/* Proyección de gastos */
+.proyeccion-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.proyeccion-card {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    transition: transform 0.2s;
+}
+
+.proyeccion-card:hover {
+    transform: translateY(-3px);
+}
+
+.proyeccion-card.destacado {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border-color: #3b82f6;
+    transform: scale(1.05);
+}
+
+.proyeccion-card.destacado:hover {
+    transform: scale(1.05) translateY(-3px);
+}
+
+.proyeccion-periodo {
+    font-size: 0.85rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.proyeccion-costo {
+    font-size: 1.6rem;
+    color: #1e293b;
+    font-weight: 700;
+}
+
+.proyeccion-card.destacado .proyeccion-costo {
+    color: #2563eb;
+}
+
+.proyeccion-compras {
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .vida-util-grid,
+    .proyeccion-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .proyeccion-card.destacado {
+        transform: none;
+    }
 }
