@@ -137,25 +137,19 @@ SUPLEMENTOS_POR_OBJETIVO = {
 def calcular_dieta(sexo, edad, peso, altura, nivel_actividad, objetivo):
     """Calcula calorías, macros y presupuesto mensual en bolivianos."""
 
-    # 1. TMB — Fórmula Mifflin-St Jeor
     if sexo == "masculino":
         tmb = (10 * peso) + (6.25 * altura) - (5 * edad) + 5
     else:
         tmb = (10 * peso) + (6.25 * altura) - (5 * edad) - 161
 
-    # 2. Calorías diarias totales
     factor = FACTORES_ACTIVIDAD[nivel_actividad]
     calorias_diarias = tmb * factor
 
-    # 3. Macronutrientes
     distribucion = MACROS_POR_OBJETIVO[objetivo]
     gramos_proteina = round((calorias_diarias * distribucion["proteina"]) / 4)
     gramos_carbos = round((calorias_diarias * distribucion["carbos"]) / 4)
     gramos_grasas = round((calorias_diarias * distribucion["grasas"]) / 9)
 
-    # 4. Presupuesto de supermercado (Bs)
-    # Base: Bs 1,200 para 2,000 kcal/día
-    # Ajuste: +Bs 0.50 por cada 100 kcal extra, -Bs 0.40 por cada 100 kcal menos
     diferencia_kcal = calorias_diarias - 2000
     if diferencia_kcal >= 0:
         ajuste = (diferencia_kcal / 100) * 0.50
@@ -163,13 +157,9 @@ def calcular_dieta(sexo, edad, peso, altura, nivel_actividad, objetivo):
         ajuste = (diferencia_kcal / 100) * 0.40
     presupuesto_super = round(1200 + ajuste)
 
-    # 5. Suplementos
     suplementos = SUPLEMENTOS_POR_OBJETIVO[objetivo]
-
-    # 6. Total
     total_mensual = presupuesto_super + suplementos["costo"]
 
-    # 7. Recomendaciones
     recomendaciones = [
         f"Hidrátate: consume aproximadamente {round(peso * 0.035, 1)}L de agua al día.",
         f"Consume {gramos_proteina}g de proteína repartidos en 4-5 comidas.",
@@ -196,6 +186,104 @@ def calcular_dieta(sexo, edad, peso, altura, nivel_actividad, objetivo):
         "lista_suplementos": suplementos["lista"],
         "total_mensual": total_mensual,
         "recomendaciones": recomendaciones,
+    }
+
+
+# ============================================================
+# OPTIMIZADOR DE COMPRAS USADOS VS NUEVOS
+# ============================================================
+
+IMPLEMENTOS_POR_DEPORTE = {
+    "futbol":     ["Botines", "Balón", "Canilleras", "Guantes de arquero", "Uniforme"],
+    "baloncesto": ["Zapatillas", "Balón", "Uniforme", "Rodilleras"],
+    "natacion":   ["Traje de baño", "Gorro", "Gafas", "Aletas"],
+    "tenis":      ["Raqueta", "Pelotas", "Zapatillas", "Overgrip"],
+}
+
+CONSEJOS_COMPRA_USADA = [
+    "Inspecciona que no tenga grietas ni desgaste excesivo.",
+    "Prueba la talla/ajuste antes de comprar.",
+    "Verifica que el precio sea al menos 30% menor que el nuevo.",
+    "Prefiere marcas reconocidas (más duraderas).",
+    "Consulta política de devolución del vendedor.",
+    "Revisa que no haya sido reparado sin garantía.",
+]
+
+
+def calcular_optimizacion(deporte, implemento, precio_nuevo, precio_usado, estado):
+    """Calcula ahorro y genera recomendación de compra."""
+
+    # Validación
+    if precio_usado >= precio_nuevo:
+        return {
+            "deporte": deporte,
+            "implemento": implemento,
+            "precio_nuevo": precio_nuevo,
+            "precio_usado": precio_usado,
+            "estado": estado,
+            "ahorro": 0,
+            "porcentaje": 0,
+            "recomendacion": {
+                "tipo": "warning",
+                "titulo": "Datos inválidos",
+                "mensaje": "El precio usado es mayor o igual al nuevo. "
+                           "Revisa los valores ingresados.",
+            },
+            "consejos": CONSEJOS_COMPRA_USADA,
+        }
+
+    ahorro = precio_nuevo - precio_usado
+    porcentaje = round((ahorro / precio_nuevo) * 100, 1)
+
+    estado_bueno = estado in ["como_nuevo", "bueno"]
+    estado_regular = estado == "regular"
+
+    if porcentaje >= 50 and estado_bueno:
+        recomendacion = {
+            "tipo": "success",
+            "titulo": "Comprar usado ✅",
+            "mensaje": f"El ahorro es significativo ({porcentaje}%) y el estado es óptimo. "
+                       f"Comprar usado te permite ahorrar Bs {ahorro} sin comprometer la calidad.",
+        }
+    elif porcentaje >= 50 and estado_regular:
+        recomendacion = {
+            "tipo": "warning",
+            "titulo": "Comprar con precaución ⚠️",
+            "mensaje": f"Ahorras {porcentaje}% pero el estado es regular. Verifica "
+                       f"cuidadosamente antes de comprar.",
+        }
+    elif 30 <= porcentaje < 50 and estado_bueno:
+        recomendacion = {
+            "tipo": "info",
+            "titulo": "Considerar usado 💡",
+            "mensaje": f"El ahorro es moderado ({porcentaje}%) y el estado es bueno. "
+                       f"Puede valer la pena si el producto está en buen estado.",
+        }
+    elif 30 <= porcentaje < 50 and estado_regular:
+        recomendacion = {
+            "tipo": "warning",
+            "titulo": "Pensar bien antes de comprar ⚠️",
+            "mensaje": f"El ahorro ({porcentaje}%) no es tan alto y el estado es regular. "
+                       f"Considera comprar nuevo si puedes estirar el presupuesto.",
+        }
+    else:
+        recomendacion = {
+            "tipo": "error",
+            "titulo": "Comprar nuevo ❌",
+            "mensaje": f"El ahorro es bajo ({porcentaje}%). No vale la pena comprar usado "
+                       f"por tan poca diferencia. Mejor compra nuevo con garantía.",
+        }
+
+    return {
+        "deporte": deporte,
+        "implemento": implemento,
+        "precio_nuevo": precio_nuevo,
+        "precio_usado": precio_usado,
+        "estado": estado,
+        "ahorro": ahorro,
+        "porcentaje": porcentaje,
+        "recomendacion": recomendacion,
+        "consejos": CONSEJOS_COMPRA_USADA,
     }
 
 
@@ -237,3 +325,23 @@ def dieta():
         resultado = calcular_dieta(sexo, edad, peso, altura, nivel_actividad, objetivo)
 
     return render_template("dieta.html", resultado=resultado)
+
+
+@app.route("/optimizador", methods=["GET", "POST"])
+def optimizador():
+    resultado = None
+
+    if request.method == "POST":
+        deporte = request.form.get("deporte", "futbol")
+        implemento = request.form.get("implemento", "")
+        precio_nuevo = float(request.form.get("precio_nuevo", 0))
+        precio_usado = float(request.form.get("precio_usado", 0))
+        estado = request.form.get("estado", "bueno")
+
+        resultado = calcular_optimizacion(deporte, implemento, precio_nuevo, precio_usado, estado)
+
+    return render_template(
+        "optimizador.html",
+        resultado=resultado,
+        implementos_por_deporte=IMPLEMENTOS_POR_DEPORTE,
+    )
