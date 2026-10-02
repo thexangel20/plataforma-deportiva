@@ -51,45 +51,105 @@
             Conoce las características de diferentes disciplinas deportivas.
           </p>
 
-          {% if nivel_costo == "todos" %}
-          <p class="resultado-filtro">Mostrando todos los deportes</p>
-          {% else %}
+          <!-- BUSCADOR -->
+          <form
+            class="buscador-deportes"
+            method="GET"
+            action="{{ url_for('inicio') }}"
+          >
+            <label for="busqueda-deporte"> Buscar deporte u objetivo: </label>
+
+            <div class="campo-busqueda">
+              <input
+                type="search"
+                id="busqueda-deporte"
+                name="busqueda"
+                value="{{ busqueda }}"
+                placeholder="Ej. fútbol, fuerza, piscina..."
+              />
+
+              <input
+                type="hidden"
+                name="nivel_costo"
+                value="{{ nivel_costo }}"
+              />
+
+              <button type="submit">Buscar</button>
+            </div>
+          </form>
+
+          <!-- RESULTADO DEL FILTRO -->
+          {% if busqueda %}
+
+          <p class="resultado-filtro">
+            Resultados para:
+            <strong>{{ busqueda }}</strong>
+          </p>
+
+          {% elif nivel_costo != "todos" %}
+
           <p class="resultado-filtro">
             Mostrando deportes de presupuesto:
             <strong>{{ nivel_costo }}</strong>
           </p>
+
+          {% else %}
+
+          <p class="resultado-filtro">Mostrando todos los deportes</p>
+
           {% endif %}
 
+          <!-- FILTRO DE PRESUPUESTO -->
           <form
             class="filtro-costo"
             method="GET"
             action="{{ url_for('inicio') }}"
           >
+            <!-- Conserva la búsqueda actual -->
+            <input type="hidden" name="busqueda" value="{{ busqueda }}" />
+
             <label for="nivel-costo"> Filtrar por presupuesto: </label>
 
             <select id="nivel-costo" name="nivel_costo">
               {% if nivel_costo == "todos" %}
+
               <option value="todos" selected>Todos los costos</option>
+
               {% else %}
+
               <option value="todos">Todos los costos</option>
+
               {% endif %} {% if nivel_costo == "Bajo" %}
+
               <option value="Bajo" selected>Bajo</option>
+
               {% else %}
+
               <option value="Bajo">Bajo</option>
+
               {% endif %} {% if nivel_costo == "Medio" %}
+
               <option value="Medio" selected>Medio</option>
+
               {% else %}
+
               <option value="Medio">Medio</option>
+
               {% endif %} {% if nivel_costo == "Alto" %}
+
               <option value="Alto" selected>Alto</option>
+
               {% else %}
+
               <option value="Alto">Alto</option>
+
               {% endif %}
             </select>
 
             <button type="submit">Filtrar</button>
           </form>
 
+          <!-- TARJETAS DE DEPORTES -->
           <div class="tarjetas-deportes">
             {% if deportes %} {% for deporte in deportes %}
 
@@ -118,12 +178,29 @@
             {% endfor %} {% else %}
 
             <div class="sin-resultados">
+              {% if busqueda %}
+
+              <h3>No se encontraron resultados</h3>
+
+              <p>
+                No encontramos deportes relacionados con
+                <strong>{{ busqueda }}</strong>.
+              </p>
+
+              <p>
+                Prueba con otra palabra como fútbol, pelota, piscina o raqueta.
+              </p>
+
+              {% else %}
+
               <h3>No se encontraron deportes</h3>
 
               <p>
                 No hay deportes disponibles para el nivel de presupuesto
                 seleccionado.
               </p>
+
+              {% endif %}
             </div>
 
             {% endif %}

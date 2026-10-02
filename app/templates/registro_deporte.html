@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Registrar deporte | SportsInfo</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+
+  <body>
+    <!-- ENCABEZADO -->
+    <header class="header">
+      <div class="contenedor">
+        <a href="/" class="logo"> SportsInfo </a>
+
+        <nav class="navegacion">
+          <a href="/">Inicio</a>
+          <a href="/#deportes">Deportes</a>
+          <a href="/#sobre-nosotros">Sobre nosotros</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+      <section class="registro-deporte">
+        <div class="contenedor">
+          <div class="registro-encabezado">
+            <h1>Registrar nuevo deporte</h1>
+
+            <p>
+              Completa la información del nuevo deporte para incorporarlo a la
+              plataforma.
+            </p>
+          </div>
+
+          <!-- FORMULARIO -->
+
+          <form
+            class="formulario-deporte"
+            method="POST"
+            action="{{ url_for('registrar_deporte') }}"
+            enctype="multipart/form-data"
+          >
+            <div class="campo-formulario">
+              <label for="nombre"> Nombre del deporte </label>
+
+              <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                placeholder="Ej. Voleibol"
+                required
+              />
+            </div>
+
+            <div class="campo-formulario">
+              <label for="presupuesto"> Presupuesto </label>
+
+              <input
+                type="text"
+                id="presupuesto"
+                name="presupuesto"
+                placeholder="Ej. Bs. 300 - Bs. 600"
+                required
+              />
+            </div>
+
+            <div class="campo-formulario">
+              <label for="tiempo"> Tiempo recomendado </label>
+
+              <input
+                type="text"
+                id="tiempo"
+                name="tiempo"
+                placeholder="Ej. 60 minutos"
+                required
+              />
+            </div>
+
+            <div class="campo-formulario">
+              <label for="dieta"> Dieta sugerida </label>
+
+              <textarea
+                id="dieta"
+                name="dieta"
+                rows="5"
+                placeholder="Ingrese la dieta o alimentación recomendada..."
+                required
+              ></textarea>
+            </div>
+
+            <div class="campo-formulario">
+              <label for="recomendaciones"> Recomendaciones </label>
+
+              <textarea
+                id="recomendaciones"
+                name="recomendaciones"
+                rows="5"
+                placeholder="Ingrese recomendaciones para practicar este deporte..."
+                required
+              ></textarea>
+            </div>
+
+            <div class="campo-formulario">
+              <label for="imagen"> Imagen del deporte </label>
+
+              <input
+                type="file"
+                id="imagen"
+                name="imagen"
+                accept="image/*"
+                required
+              />
+            </div>
+
+            <div class="acciones-formulario">
+              <button type="submit" class="boton">Registrar deporte</button>
+
+              <a href="/" class="enlace-cancelar"> Cancelar </a>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+
+    <footer class="footer">
+      <div class="contenedor">
+        <p>© 2026 SportsInfo - Proyecto de Sistemas de Información 2</p>
+      </div>
+    </footer>
+  </body>
+</html>
