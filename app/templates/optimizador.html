@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimizador Usados vs Nuevos | SportsInfo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="contenedor">
+            <a href="/" class="logo">SportsInfo</a>
+            <nav class="navegacion">
+    <a href="/">Inicio</a>
+    <a href="/planificador">Planificador</a>
+    <a href="/dieta">Dieta</a>
+    <a href="/optimizador">Optimizador</a>
+    <a href="/desgaste">Desgaste</a>
+</nav>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="hero">
+            <div class="contenedor">
+                <h1>Optimizador de compras</h1>
+                <p>
+                    Compara el costo de comprar equipamiento nuevo frente a
+                    usado o reacondicionado y ahorra sin comprometer la calidad.
+                </p>
+            </div>
+        </section>
+
+        <section class="seccion-planificador">
+            <div class="contenedor">
+                <h2>Datos del implemento</h2>
+
+                <form method="POST" class="formulario-planificador">
+
+                    <div class="campo">
+                        <label for="deporte">Deporte:</label>
+                        <select name="deporte" id="deporte" required onchange="actualizarImplementos()">
+                            <option value="futbol">⚽ Fútbol</option>
+                            <option value="baloncesto">🏀 Baloncesto</option>
+                            <option value="natacion">🏊 Natación</option>
+                            <option value="tenis">🎾 Tenis</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="implemento">Implemento:</label>
+                        <select name="implemento" id="implemento" required>
+                            <!-- Se llena con JavaScript -->
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="precio_nuevo">Precio nuevo (Bs):</label>
+                        <input type="number" name="precio_nuevo" id="precio_nuevo"
+                               min="1" max="10000" step="0.01" value="800" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="precio_usado">Precio usado (Bs):</label>
+                        <input type="number" name="precio_usado" id="precio_usado"
+                               min="1" max="10000" step="0.01" value="400" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="estado">Estado del usado:</label>
+                        <select name="estado" id="estado" required>
+                            <option value="como_nuevo">Como nuevo (sin uso o casi nuevo)</option>
+                            <option value="bueno" selected>Bueno (mínimo desgaste)</option>
+                            <option value="regular">Regular (desgaste visible)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="boton">Comparar precios</button>
+
+                </form>
+
+                {% if resultado %}
+                <div class="resultado-plan">
+
+                    <h2>♻️ Resultado del análisis</h2>
+
+                    <h3>📌 Implemento analizado</h3>
+                    <div class="resumen-plan">
+                        <div class="resumen-item">
+                            <span class="resumen-label">Deporte</span>
+                            <strong class="resumen-valor">{{ resultado.deporte|capitalize }}</strong>
+                        </div>
+                        <div class="resumen-item">
+                            <span class="resumen-label">Implemento</span>
+                            <strong class="resumen-valor">{{ resultado.implemento }}</strong>
+                        </div>
+                        <div class="resumen-item">
+                            <span class="resumen-label">Estado usado</span>
+                            <strong class="resumen-valor">{{ resultado.estado|replace('_', ' ')|capitalize }}</strong>
+                        </div>
+                    </div>
+
+                    <h3>📊 Comparación de precios</h3>
+                    <table class="tabla-plan">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Precio</th>
+                                <th>Ahorro</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>🆕 Nuevo</td>
+                                <td>Bs {{ "%.2f"|format(resultado.precio_nuevo) }}</td>
+                                <td>—</td>
+                            </tr>
+                            <tr class="dia-entrena">
+                                <td>♻️ Usado ({{ resultado.estado|replace('_', ' ')|lower }})</td>
+                                <td>Bs {{ "%.2f"|format(resultado.precio_usado) }}</td>
+                                <td>{{ resultado.porcentaje }}%</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr style="background: #eff6ff; font-weight: bold;">
+                                <td colspan="2">AHORRO TOTAL</td>
+                                <td>Bs {{ "%.2f"|format(resultado.ahorro) }} ({{ resultado.porcentaje }}%)</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <h3>💡 Recomendación</h3>
+                    <div class="advertencias">
+                        <div class="advertencia advertencia-{{ resultado.recomendacion.tipo }}">
+                            <strong>{{ resultado.recomendacion.titulo }}</strong><br>
+                            {{ resultado.recomendacion.mensaje }}
+                        </div>
+                    </div>
+
+                    <h3>⚠️ Consejos antes de comprar usado</h3>
+                    <ul class="recomendaciones">
+                        {% for c in resultado.consejos %}
+                        <li>{{ c }}</li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+                {% endif %}
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="contenedor">
+            <p>© 2026 SportsInfo - Proyecto de Sistemas de Información 2</p>
+        </div>
+    </footer>
+
+    <script>
+        const IMPLEMENTOS = {
+            "futbol":     ["Botines", "Balón", "Canilleras", "Guantes de arquero", "Uniforme"],
+            "baloncesto": ["Zapatillas", "Balón", "Uniforme", "Rodilleras"],
+            "natacion":   ["Traje de baño", "Gorro", "Gafas", "Aletas"],
+            "tenis":      ["Raqueta", "Pelotas", "Zapatillas", "Overgrip"]
+        };
+
+        function actualizarImplementos() {
+            const deporte = document.getElementById("deporte").value;
+            const select = document.getElementById("implemento");
+            select.innerHTML = "";
+
+            IMPLEMENTOS[deporte].forEach(function(item) {
+                const opt = document.createElement("option");
+                opt.value = item;
+                opt.textContent = item;
+                select.appendChild(opt);
+            });
+        }
+
+        // Inicializar al cargar
+        document.addEventListener("DOMContentLoaded", actualizarImplementos);
+    </script>
+
+</body>
+
+</html>
