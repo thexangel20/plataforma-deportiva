@@ -27,7 +27,8 @@ class PruebasHistorias(unittest.TestCase):
         self.deporte = {
             'identificador': 'futbol', 'nombre': 'Fútbol',
             'costo_estimado': None, 'moneda': 'BOB', 'periodo_costo': '',
-            'equipamiento': '', 'tiempo_practica': '', 'alimentacion': '',
+            'equipamiento': '', 'tiempo_practica': 60, 'alimentacion': '',
+            'espacio_practica': 'exterior',
             'recomendaciones': '', 'condiciones': '', 'imagen_ruta': None,
         }
 
@@ -45,7 +46,8 @@ class PruebasHistorias(unittest.TestCase):
     def formulario(self):
         return {'csrf': self.csrf(True), 'nombre': 'Fútbol actualizado',
                 'moneda': 'BOB', 'costo_estimado': '80.50',
-                'periodo_costo': 'Por mes', 'equipamiento': 'Balón'}
+                'periodo_costo': 'Por mes', 'equipamiento': 'Balón',
+                'tiempo_practica': '60', 'espacio_practica': 'exterior'}
 
     def test_paginas_publicas_y_formulario(self):
         for ruta in ('/', '/deportes/futbol', '/deportes/futbol/reportar', '/admin/ingresar'):
@@ -119,7 +121,7 @@ class PruebasHistorias(unittest.TestCase):
             respuesta = self.cliente.post('/admin/deportes/futbol/editar', data=formulario)
             self.assertEqual(respuesta.status_code, 302)
             datos = consulta.call_args.kwargs['datos']
-            self.assertEqual(datos['costo_estimado'], '80.50')
+            self.assertEqual(datos['costo'], '80.50')
             self.assertNotIn('imagen_ruta', datos)
         actualizado = self.deporte | datos
         with patch('app.deportes.consultar', return_value=[actualizado]):
@@ -183,13 +185,13 @@ class PruebasHistorias(unittest.TestCase):
         with patch('app.deportes.consultar', side_effect=[[self.deporte], [self.deporte]]) as consulta, patch('app.deportes.subir_imagen', return_value='deportes/nueva.jpg'):
             respuesta = self.cliente.post('/admin/deportes/futbol/editar', data=formulario | {'imagen': (imagen, 'imagen.png')})
             self.assertEqual(respuesta.status_code, 302)
-            self.assertEqual(consulta.call_args.kwargs['datos']['imagen_ruta'], 'deportes/nueva.jpg')
+            self.assertEqual(consulta.call_args.kwargs['datos']['imagen'], 'deportes/nueva.jpg')
 
     def test_limpieza_no_borra_imagen_que_si_se_guardo(self):
-        with patch('app.deportes.consultar', return_value=[{'imagen_ruta': 'deportes/nueva.jpg'}]), patch('app.deportes.solicitar') as solicitud:
+        with patch('app.deportes.consultar', return_value=[{'imagen': 'deportes/nueva.jpg'}]), patch('app.deportes.solicitar') as solicitud:
             descartar_imagen('deportes/nueva.jpg', 'futbol')
             solicitud.assert_not_called()
-        with patch('app.deportes.consultar', return_value=[{'imagen_ruta': 'deportes/anterior.jpg'}]), patch('app.deportes.solicitar') as solicitud:
+        with patch('app.deportes.consultar', return_value=[{'imagen': 'deportes/anterior.jpg'}]), patch('app.deportes.solicitar') as solicitud:
             descartar_imagen('deportes/nueva.jpg', 'futbol')
             self.assertEqual(solicitud.call_args.args[1], 'DELETE')
 

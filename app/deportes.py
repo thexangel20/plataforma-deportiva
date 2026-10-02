@@ -35,13 +35,14 @@ def adaptar_deporte(deporte):
     """Adapta los nombres de la base de datos al formato usado por las vistas."""
     return {
         **deporte,
-        'identificador': deporte.get('id'),
-        'costo_estimado': deporte.get('costo'),
-        'periodo_costo': deporte.get('periodo'),
-        'tiempo_practica': deporte.get('minutos'),
-        'recomendaciones': deporte.get('consejos'),
-        'espacio_practica': deporte.get('espacio'),
-        'imagen_ruta': deporte.get('imagen'),
+        'id': deporte.get('id') or deporte.get('identificador'),
+        'identificador': deporte.get('identificador') or deporte.get('id'),
+        'costo_estimado': deporte.get('costo', deporte.get('costo_estimado')),
+        'periodo_costo': deporte.get('periodo', deporte.get('periodo_costo')),
+        'tiempo_practica': deporte.get('minutos', deporte.get('tiempo_practica')),
+        'recomendaciones': deporte.get('consejos', deporte.get('recomendaciones')),
+        'espacio_practica': deporte.get('espacio', deporte.get('espacio_practica')),
+        'imagen_ruta': deporte.get('imagen', deporte.get('imagen_ruta')),
         'instalaciones_especiales': None,
         'requiere_companeros': None,
     }
@@ -55,7 +56,7 @@ def obtener_deporte(identificador):
         registros = consultar(
             'sportsinfo_deportes',
             parametros={
-                'select': '*',
+        'select': '*',
                 'id': f'eq.{identificador}',
                 'limit': 1,
             },

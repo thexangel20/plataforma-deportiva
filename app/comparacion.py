@@ -7,7 +7,7 @@ from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
 
 from app import app
 from app.condiciones import resumir_condiciones
-from app.deportes import CAMPOS_TEXTO, DEPORTES_INICIALES, obtener_deporte
+from app.deportes import CAMPOS_TEXTO, DEPORTES_INICIALES, adaptar_deporte, obtener_deporte
 from app.pdf_comparacion import generar_pdf
 from app.seguridad import validar_csrf
 from app.servicios import configurado, consultar
@@ -53,13 +53,14 @@ def comparar():
     except ValueError:
         abort(400)
     if configurado():
-        opciones = consultar('deportes_axel', parametros={
-            'select': 'identificador,nombre',
-            'order': 'nombre.asc,identificador.asc',
+        opciones = consultar('sportsinfo_deportes', parametros={
+            'select': 'id,nombre',
+            'order': 'nombre.asc,id.asc',
             'limit': 51, 'offset': (pagina - 1) * 50,
         })
+        opciones = [adaptar_deporte(opcion) for opcion in opciones]
     else:
-        opciones = list(DEPORTES_INICIALES) if pagina == 1 else []
+        opciones = [adaptar_deporte(opcion) for opcion in DEPORTES_INICIALES] if pagina == 1 else []
     siguientes = len(opciones) > 50
     opciones = opciones[:50]
     deportes = [obtener_deporte(valor) for valor in seleccion]
@@ -71,7 +72,7 @@ def comparar():
             'fecha': datetime.now(timezone.utc).strftime('%d/%m/%Y %H:%M UTC'),
             'provisional': not configurado(),
         }
-    identificadores_visibles = {opcion['identificador'] for opcion in opciones}
+    identificadores_visibles = {opcion.get('identificador') for opcion in opciones}
     seleccion_fuera = [
         deporte for deporte in deportes
         if deporte['identificador'] not in identificadores_visibles

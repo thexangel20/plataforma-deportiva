@@ -82,6 +82,14 @@ def test_catalog_filters_and_details(app, client):
     assert client.get('/catalogo/resultados?q=futbol&costo=bajo').get_json()['count'] == 0
 
 
+def test_legacy_image_filename_uses_local_catalog_photo(app, client):
+    app.extensions['store'].update('deportes', 'futbol', {'imagen': 'futbol.png'})
+    home = client.get('/').get_data(as_text=True)
+    detail = client.get('/deportes/futbol').get_data(as_text=True)
+    assert '/static/photos/futbol.jpg' in home
+    assert '/static/photos/futbol.jpg' in detail
+
+
 def test_auth_persistence_and_public_role(app, client):
     assert client.post('/registro', data={'nombre': 'X'}).status_code == 400
     response = post(client, '/registro', dict(nombre='Ana', email='ANA@example.com', password='my-password-123',

@@ -77,24 +77,12 @@ not deporte else 'Editar ' ~ deporte.nombre }}{% endblock %} {% block contenido
       <select
         id="{{ campo }}"
         name="{{ campo }}"
-        {%
-        if
-        campo=""
-        ="espacio_practica"
-        %}required{%
-        endif
-        %}
+        {% if campo == 'espacio_practica' %}required{% endif %}
       >
         {% for valor, etiqueta in opciones.items() %}
         <option
           value="{{ valor }}"
-          {%
-          if
-          deporte.get(campo)=""
-          ="valor"
-          %}selected{%
-          endif
-          %}
+          {% if deporte.get(campo) == valor %}selected{% endif %}
         >
           {{ etiqueta }}
         </option>

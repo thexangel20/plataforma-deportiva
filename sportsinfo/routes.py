@@ -52,7 +52,7 @@ def identify():
 def context():
     return {'csrf': csrf, 'goals': GOALS, 'levels': LEVELS,
             'local_mode': current_app.config['DATA_BACKEND'] == 'local',
-            'sport_cost': sport_cost}
+            'sport_cost': sport_cost, 'sport_image': sport_image}
 
 
 def authenticated(admin=False):
@@ -73,6 +73,16 @@ def sport_cost(sport):
     if sport['costo'] is None:
         return 'Por confirmar'
     return f"{sport['costo']:,.2f} {sport['moneda']} / {sport['periodo']}"
+
+
+def sport_image(sport):
+    image = sport.get('imagen') or ''
+    if image.startswith(('https://', 'http://', '/')):
+        return image
+    identifier = re.sub(r'[^a-z0-9_-]', '', sport.get('id', '').lower())
+    if identifier:
+        return url_for('static', filename='photos/' + identifier + '.jpg')
+    return url_for('static', filename='brand.svg')
 
 
 def sport_by_id(identifier, inactive=False):

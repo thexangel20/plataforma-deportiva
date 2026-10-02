@@ -23,7 +23,7 @@ class PruebasCondicionesComparacion(unittest.TestCase):
             'identificador': 'futbol', 'nombre': 'Fútbol',
             'costo_estimado': '90.50', 'moneda': 'BOB',
             'periodo_costo': 'Por mes', 'equipamiento': 'Balón y calzado',
-            'tiempo_practica': 'Tres sesiones por semana',
+            'tiempo_practica': '60',
             'espacio_practica': 'exterior',
             'instalaciones_especiales': 'si', 'requiere_companeros': 'no',
         }
@@ -46,10 +46,10 @@ class PruebasCondicionesComparacion(unittest.TestCase):
 
     def test_validar_y_guardar_condiciones(self):
         datos = validar_datos(self.deporte)
-        self.assertEqual(datos['espacio_practica'], 'exterior')
-        self.assertEqual(datos['requiere_companeros'], 'no')
+        self.assertEqual(datos['espacio'], 'exterior')
+        self.assertEqual(datos['minutos'], 60)
         datos = validar_datos(self.deporte | {'requiere_companeros': ''})
-        self.assertIsNone(datos['requiere_companeros'])
+        self.assertNotIn('requiere_companeros', datos)
         for campo in ('espacio_practica', 'requiere_companeros',
                       'instalaciones_especiales'):
             with self.assertRaises(ValueError):
@@ -65,7 +65,8 @@ class PruebasCondicionesComparacion(unittest.TestCase):
             respuesta = self.cliente.post('/admin/deportes/futbol/editar',
                 data=self.deporte | {'csrf': 'prueba'})
             self.assertEqual(respuesta.status_code, 302)
-            self.assertEqual(consulta.call_args.kwargs['datos']['requiere_companeros'], 'no')
+            self.assertEqual(consulta.call_args.kwargs['datos']['espacio'], 'exterior')
+            self.assertNotIn('requiere_companeros', consulta.call_args.kwargs['datos'])
 
     def test_comparacion_sin_seleccion_o_con_un_deporte(self):
         for ruta in ('/comparar', '/comparar?deporte=futbol'):
