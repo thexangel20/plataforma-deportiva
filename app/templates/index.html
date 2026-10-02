@@ -51,8 +51,47 @@
             Conoce las características de diferentes disciplinas deportivas.
           </p>
 
+          {% if nivel_costo == "todos" %}
+          <p class="resultado-filtro">Mostrando todos los deportes</p>
+          {% else %}
+          <p class="resultado-filtro">
+            Mostrando deportes de presupuesto:
+            <strong>{{ nivel_costo }}</strong>
+          </p>
+          {% endif %}
+
+          <form
+            class="filtro-costo"
+            method="GET"
+            action="{{ url_for('inicio') }}"
+          >
+            <label for="nivel-costo"> Filtrar por presupuesto: </label>
+
+            <select id="nivel-costo" name="nivel_costo">
+              {% if nivel_costo == "todos" %}
+              <option value="todos" selected>Todos los costos</option>
+              {% else %}
+              <option value="todos">Todos los costos</option>
+              {% endif %} {% if nivel_costo == "Bajo" %}
+              <option value="Bajo" selected>Bajo</option>
+              {% else %}
+              <option value="Bajo">Bajo</option>
+              {% endif %} {% if nivel_costo == "Medio" %}
+              <option value="Medio" selected>Medio</option>
+              {% else %}
+              <option value="Medio">Medio</option>
+              {% endif %} {% if nivel_costo == "Alto" %}
+              <option value="Alto" selected>Alto</option>
+              {% else %}
+              <option value="Alto">Alto</option>
+              {% endif %}
+            </select>
+
+            <button type="submit">Filtrar</button>
+          </form>
+
           <div class="tarjetas-deportes">
-            {% for deporte in deportes %}
+            {% if deportes %} {% for deporte in deportes %}
 
             <article class="tarjeta-deporte">
               <div class="imagen-deporte">
@@ -61,6 +100,7 @@
                   alt="{{ deporte['nombre'] }}"
                 />
               </div>
+
               <h3>{{ deporte["nombre"] }}</h3>
 
               <p>Costo estimado: {{ deporte["costo"] }}</p>
@@ -75,7 +115,18 @@
               </a>
             </article>
 
-            {% endfor %}
+            {% endfor %} {% else %}
+
+            <div class="sin-resultados">
+              <h3>No se encontraron deportes</h3>
+
+              <p>
+                No hay deportes disponibles para el nivel de presupuesto
+                seleccionado.
+              </p>
+            </div>
+
+            {% endif %}
           </div>
         </div>
       </section>

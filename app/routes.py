@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request
 import unicodedata
 from app import app
 
@@ -19,6 +19,9 @@ deportes = [
         "nombre": "Fútbol",
         "imagen": "futbol.png",
         "costo": "Bs. 150",
+        "nivel_costo": "Bajo",
+        "inversion_inicial": "Bs. 150 - Bs. 450",
+        "costo_recurrente": "Bs. 5 - Bs. 15 por persona/partido",
         "tiempo": "90 minutos",
         "dieta": "Se recomienda mantener una alimentación equilibrada que incluya carbohidratos, proteínas, frutas y verduras, además de una hidratación adecuada.",
         "recomendaciones": [
@@ -32,6 +35,9 @@ deportes = [
         "nombre": "Baloncesto",
         "imagen": "baloncesto.png",
         "costo": "Bs. 120",
+        "nivel_costo": "Medio",
+        "inversion_inicial": "Bs. 300 - Bs. 800",
+        "costo_recurrente": "Costos recurrentes moderados",
         "tiempo": "90 minutos",
         "dieta": "Se recomienda una alimentación equilibrada con suficiente energía, proteínas, frutas y verduras, acompañada de una buena hidratación.",
         "recomendaciones": [
@@ -45,6 +51,9 @@ deportes = [
         "nombre": "Natación",
         "imagen": "natacion.png",
         "costo": "Bs. 200",
+        "nivel_costo": "Medio",
+        "inversion_inicial": "Bs. 200 - Bs. 500",
+        "costo_recurrente": "Bs. 150 - Bs. 400 mensuales",
         "tiempo": "60 minutos",
         "dieta": "Se recomienda una alimentación equilibrada que aporte energía y proteínas, junto con una hidratación adecuada antes y después de la práctica.",
         "recomendaciones": [
@@ -58,6 +67,9 @@ deportes = [
         "nombre": "Tenis",
         "imagen": "tenis.png",
         "costo": "Bs. 180",
+        "nivel_costo": "Alto",
+        "inversion_inicial": "Bs. 600 - Bs. 1.800+",
+        "costo_recurrente": "Bs. 40 - Bs. 100 por hora de cancha",
         "tiempo": "60 minutos",
         "dieta": "Se recomienda una alimentación equilibrada que incluya fuentes de energía, proteínas, frutas y verduras, además de una hidratación adecuada.",
         "recomendaciones": [
@@ -71,7 +83,24 @@ deportes = [
 
 @app.route("/")
 def inicio():
-    return render_template("index.html", deportes=deportes)
+
+    nivel_costo = request.args.get("nivel_costo", "todos")
+
+    deportes_filtrados = deportes
+
+    if nivel_costo != "todos":
+
+        deportes_filtrados = [
+            deporte
+            for deporte in deportes
+            if deporte["nivel_costo"] == nivel_costo
+        ]
+
+    return render_template(
+        "index.html",
+        deportes=deportes_filtrados,
+        nivel_costo=nivel_costo
+    )
 
 @app.route("/us2/deporte/<nombre>")
 def detalle_us2(nombre):
