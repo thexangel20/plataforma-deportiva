@@ -2,10 +2,18 @@ SPORTSINFO - HU2
 Guardar deportes favoritos
 
 ESTADO
-Pendiente por decisión del equipo.
+Demostración funcional para el grupo. Integración definitiva pendiente.
 
 MOTIVO
-Todavía no existe el sistema de cuentas de usuario. No se creó una versión temporal basada en la sesión del navegador.
+El grupo puede probar agregar, consultar y quitar favoritos desde /favoritos.
+La selección es temporal, se guarda en la sesión del navegador y admite hasta 20 deportes sin duplicados.
+Las operaciones están protegidas con CSRF. No se crean cuentas ni se guardan favoritos en Supabase.
+
+ARCHIVOS DE LA DEMOSTRACION
+app/favoritos.py
+app/templates/favoritos.html
+app/templates/boton_favorito.html
+tests/test_favoritos.py
 
 DATOS NECESARIOS PARA TERMINARLA
 Nombre de la tabla de usuarios.

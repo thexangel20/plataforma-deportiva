@@ -21,5 +21,6 @@
         <a href="{{ url_for('inicio') }}">Volver al catálogo</a>
         {% if session.get('administrador') %}<a class="boton" href="{{ url_for('editar_deporte', identificador=deporte.identificador) }}">Editar deporte</a>{% endif %}
     </div>
+    {% include 'boton_favorito.html' %}
 </article>
 {% endblock %}

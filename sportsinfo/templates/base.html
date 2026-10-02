@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#193d32">
+  <meta name="description" content="Encuentra, compara y elige tu próximo deporte. Información y herramientas para empezar con SportsInfo.">
+  <title>{% block title %}Tu próxima disciplina{% endblock %} · SportsInfo</title>
+  <link rel="icon" href="{{ url_for('static', filename='brand.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
+  <script src="{{ url_for('static', filename='site.js') }}" defer></script>
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+{% if local_mode %}<div class="environment">Explora la versión local · Catálogo y precios de ejemplo</div>{% endif %}
+<header class="header"><div class="wrap nav">
+  <a class="brand" href="{{ url_for('web.home') }}"><span class="brand-mark" aria-hidden="true">↗</span>sportsinfo<span class="brand-dot">.</span></a>
+  <nav aria-label="Principal" class="primary-nav">
+    <a href="{{ url_for('web.home') }}#catalogo" {% if request.endpoint == 'web.home' %}aria-current="page"{% endif %}>Explorar</a>
+    <a href="{{ url_for('web.compare') }}" {% if request.endpoint == 'web.compare' %}aria-current="page"{% endif %}>Comparar</a>
+    <a href="{{ url_for('web.tools_page') }}" {% if request.endpoint in ['web.tools_page','web.calculator'] %}aria-current="page"{% endif %}>Herramientas</a>
+  </nav>
+  {% if g.user %}
+  <details class="account"><summary><span class="avatar">{{ g.user.nombre[0]|upper }}</span>{{ g.user.nombre.split(' ')[0] }} <span aria-hidden="true">⌄</span></summary><div class="account-menu">
+    <a href="{{ url_for('web.profile') }}">Mi perfil</a><a href="{{ url_for('web.favorites') }}">Mis favoritos</a><a href="{{ url_for('web.recommend') }}">Para mí</a>
+    {% if g.user.rol == 'admin' %}<a href="{{ url_for('web.admin') }}">Administración</a>{% endif %}
+    <form method="post" action="{{ url_for('web.logout') }}"><input type="hidden" name="csrf" value="{{ csrf() }}"><button class="link-button">Cerrar sesión</button></form>
+  </div></details>
+  {% else %}<a class="button small" href="{{ url_for('web.login') }}">Mi cuenta <span aria-hidden="true">↗</span></a>{% endif %}
+</div></header>
+<main id="contenido">
+  {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="wrap notices" aria-live="polite">{% for category,message in messages %}<div class="notice {{ category }}" role="{{ 'alert' if category == 'error' else 'status' }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+  {% block content %}{% endblock %}
+</main>
+<footer class="footer"><div class="wrap footer-inner"><div><a class="brand" href="{{ url_for('web.home') }}">sportsinfo.</a><p>Más información. Más movimiento.</p></div><div><a href="{{ url_for('web.home') }}#catalogo">Explora deportes</a><a href="{{ url_for('web.tools_page') }}">Planea tu práctica</a><small>Proyecto universitario · Información orientativa</small></div></div></footer>
+</body></html>

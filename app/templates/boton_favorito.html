@@ -1,0 +1,12 @@
+{% if deporte.identificador in identificadores_favoritos() %}
+<form method="post" action="{{ url_for('quitar_favorito', identificador=deporte.identificador) }}">
+    <input type="hidden" name="csrf" value="{{ obtener_csrf() }}">
+    <button class="boton" type="submit">Quitar de favoritos</button>
+</form>
+{% else %}
+<form method="post" action="{{ url_for('agregar_favorito', identificador=deporte.identificador) }}">
+    <input type="hidden" name="csrf" value="{{ obtener_csrf() }}">
+    <button class="boton" type="submit">Agregar a favoritos</button>
+</form>
+{% endif %}
+<p class="aviso-favoritos">Favoritos de demostración: guardado temporal en este navegador.</p>

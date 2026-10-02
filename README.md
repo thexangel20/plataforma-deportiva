@@ -1,3 +1,11 @@
+# Rama prueba: aplicación integrada
+
+La entrada `run.py` inicia la versión con las 21 HU. Consulta [README_PRUEBA.md](README_PRUEBA.md) para ejecutarla, acceder como administrador, probarla y conectar Supabase. La definición acordada está en [HISTORIAS_USUARIO_ACORDADAS.md](HISTORIAS_USUARIO_ACORDADAS.md).
+
+El contenido siguiente documenta la implementación anterior de Axel, conservada en `app/`.
+
+---
+
 # Plataforma Deportiva
 
 Plataforma web para consultar información sobre diferentes deportes.
@@ -128,13 +136,23 @@ creada con la versión anterior, ejecutar además `sql/hu1_condiciones.sql` ante
 de guardar nuevas ediciones. Este script agrega columnas sin borrar registros.
 No se cargaron condiciones deportivas inventadas.
 
-## HU2: favoritos pendiente del sistema de cuentas
+## HU2: demostración de favoritos para el equipo
 
-Por decisión de Axel, no se implementan favoritos temporales en la sesión.
-Esta HU queda pendiente hasta que el equipo defina la autenticación y el
-identificador de usuario. Para integrarla hará falta la relación entre usuario
-y deporte, impedir duplicados y restringir la consulta y eliminación al dueño
-de cada favorito. No hay rutas ni botones de favoritos que simulen estar listos.
+Por solicitud de Axel se incluye una demostración temporal mientras se prepara
+la base de datos. Desde el catálogo o el detalle se pueden agregar favoritos,
+abrir `/favoritos`, consultar sus características y quitarlos. No permite
+duplicados y admite hasta 20 deportes. Todas las acciones usan POST y CSRF.
+
+La selección se almacena en la sesión firmada de este navegador, sin crear
+usuarios ni escribir favoritos en Supabase. Se puede perder al borrar cookies,
+terminar la sesión o iniciar/cerrar la sesión administrativa. Los navegadores
+que restauran sesiones pueden conservarla al reiniciarse. La interfaz identifica
+expresamente esta funcionalidad como demostración y guardado temporal.
+
+La HU2 definitiva sigue pendiente de cuentas y base de datos: deberá guardar la
+relación entre usuario y deporte, impedir duplicados y restringir la consulta
+y eliminación al propietario. `app/favoritos.py` concentra el flujo provisional
+para sustituirlo cuando se acuerden los identificadores del equipo.
 
 ## HU3: comparación básica y descarga PDF
 

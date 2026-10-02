@@ -30,3 +30,5 @@
 .tabla-comparacion thead { background: #eaf2ff; }
 .header .contenedor { gap: 16px; flex-wrap: wrap; padding-top: 12px; padding-bottom: 12px; }
 .navegacion { flex-wrap: wrap; gap: 16px; }
+.tarjeta-deporte form { margin-top: 20px; }
+.aviso-favoritos { font-size: 14px; line-height: 1.5; color: #475569; margin-top: 12px; }

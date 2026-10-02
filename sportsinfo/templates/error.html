@@ -1,0 +1,2 @@
+{% extends 'base.html' %}{% block title %}{{ title }}{% endblock %}
+{% block content %}<section class="wrap section narrow"><div class="empty-state"><span aria-hidden="true">◎</span><h1>{{ title }}</h1><p>{{ message }}</p><a class="button" href="{{ url_for('web.home') }}">Volver al inicio →</a></div></section>{% endblock %}

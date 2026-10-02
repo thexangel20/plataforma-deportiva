@@ -14,6 +14,7 @@
             <nav class="navegacion" aria-label="Navegación principal">
                 <a href="{{ url_for('inicio') }}">Inicio</a>
                 <a href="{{ url_for('comparar') }}">Comparar deportes</a>
+                <a href="{{ url_for('listar_favoritos') }}">Mis favoritos</a>
                 {% if session.get('administrador') %}
                 <a href="{{ url_for('listar_reportes') }}">Reportes</a>
                 <a href="{{ url_for('administrar_deportes') }}">Editar deportes</a>

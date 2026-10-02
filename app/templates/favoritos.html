@@ -1,0 +1,28 @@
+{% extends 'base_reportes.html' %}
+{% block titulo %}Mis favoritos{% endblock %}
+{% block contenido %}
+<section class="panel">
+    <h1>Mis favoritos</h1>
+    <p class="mensaje">Demostración para el equipo. Esta lista es temporal y no está asociada a una cuenta. El guardado permanente se conectará cuando estén listas la base de datos y las cuentas.</p>
+    <p>Deportes en la lista: {{ deportes|length }} de 20.</p>
+    {% for deporte in deportes %}
+    <article class="reporte">
+        <h2>{{ deporte.nombre }}</h2>
+        {% if deporte.no_disponible %}
+        <p>Este deporte no está disponible en este momento. Puedes quitarlo de la lista.</p>
+        {% else %}
+        {% if deporte.imagen_ruta %}<img class="imagen-deporte" src="{{ direccion_imagen(deporte.imagen_ruta) }}" alt="{{ deporte.nombre }}">{% endif %}
+        <a href="{{ url_for('detalle_deporte', identificador=deporte.identificador) }}">Ver información</a>
+        {% endif %}
+        <form method="post" action="{{ url_for('quitar_favorito', identificador=deporte.identificador) }}">
+            <input type="hidden" name="csrf" value="{{ obtener_csrf() }}">
+            <button class="boton" type="submit">Quitar de favoritos</button>
+        </form>
+    </article>
+    {% else %}
+    <h2>Todavía no tienes favoritos</h2>
+    <p>Explora los deportes y pulsa Agregar a favoritos para guardar tu selección de prueba.</p>
+    {% endfor %}
+    <div class="acciones"><a class="boton" href="{{ url_for('inicio') }}#deportes">Explorar deportes</a></div>
+</section>
+{% endblock %}

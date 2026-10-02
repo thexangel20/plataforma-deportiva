@@ -19,4 +19,4 @@ app.config.update(
     MAX_CONTENT_LENGTH=6 * 1024 * 1024,
 )
 
-from app import routes, reportes, deportes, comparacion
+from app import routes, reportes, deportes, comparacion, favoritos
