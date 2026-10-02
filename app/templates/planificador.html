@@ -14,10 +14,12 @@
         <div class="contenedor">
             <a href="/" class="logo">SportsInfo</a>
             <nav class="navegacion">
-                <a href="/">Inicio</a>
-                <a href="/planificador">Planificador</a>
-                <a href="#sobre-nosotros">Sobre nosotros</a>
-            </nav>
+    <a href="/">Inicio</a>
+    <a href="/planificador">Planificador</a>
+    <a href="/dieta">Dieta</a>
+    <a href="/#deportes">Deportes</a>
+    <a href="#sobre-nosotros">Sobre nosotros</a>
+</nav>
         </div>
     </header>
 
@@ -72,87 +74,16 @@
                 </form>
 
                 {% if resultado %}
-<div class="resultado-plan">
-
-    <h2>📊 Tu plan de entrenamiento</h2>
-
-    <div class="resumen-plan">
-        <div class="resumen-item">
-            <span class="resumen-label">Nivel</span>
-            <strong class="resumen-valor">{{ resultado.nivel|capitalize }}</strong>
-        </div>
-        <div class="resumen-item">
-            <span class="resumen-label">Objetivo</span>
-            <strong class="resumen-valor">{{ resultado.objetivo|capitalize }}</strong>
-        </div>
-        <div class="resumen-item">
-            <span class="resumen-label">Sesiones</span>
-            <strong class="resumen-valor">{{ resultado.dias_disponibles }} por semana</strong>
-        </div>
-        <div class="resumen-item">
-            <span class="resumen-label">Duración</span>
-            <strong class="resumen-valor">{{ resultado.duracion_sesion }}h por sesión</strong>
-        </div>
-        <div class="resumen-item">
-            <span class="resumen-label">Total semanal</span>
-            <strong class="resumen-valor">{{ resultado.horas_reales }}h</strong>
-        </div>
-        <div class="resumen-item">
-            <span class="resumen-label">Recomendado</span>
-            <strong class="resumen-valor">{{ resultado.horas_recomendadas }}h</strong>
-        </div>
-    </div>
-
-    <h3>📅 Distribución semanal</h3>
-    <table class="tabla-plan">
-        <thead>
-            <tr>
-                <th>Día</th>
-                <th>Actividad</th>
-                <th>Duración</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for d in resultado.distribucion %}
-            <tr class="{% if d.entrena %}dia-entrena{% else %}dia-descanso{% endif %}">
-                <td>{{ d.dia }}</td>
-                <td>
-                    {% if d.entrena %}
-                        🏃 Entrenamiento
-                    {% else %}
-                        💤 Descanso
-                    {% endif %}
-                </td>
-                <td>
-                    {% if d.entrena %}
-                        {{ d.duracion }}h
-                    {% else %}
-                        —
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <h3>💬 Advertencias</h3>
-    <div class="advertencias">
-        {% for a in resultado.advertencias %}
-        <div class="advertencia advertencia-{{ a.tipo }}">
-            {{ a.mensaje }}
-        </div>
-        {% endfor %}
-    </div>
-
-    <h3>✅ Recomendaciones</h3>
-    <ul class="recomendaciones">
-        {% for r in resultado.recomendaciones %}
-        <li>{{ r }}</li>
-        {% endfor %}
-    </ul>
-
-</div>
-{% endif %}
+                <div class="resultado-temporal">
+                    <h3>Datos recibidos (prueba):</h3>
+                    <ul>
+                        <li>Nivel: {{ resultado.nivel }}</li>
+                        <li>Objetivo: {{ resultado.objetivo }}</li>
+                        <li>Días: {{ resultado.dias }}</li>
+                        <li>Horas por día: {{ resultado.horas }}</li>
+                    </ul>
+                </div>
+                {% endif %}
 
             </div>
         </section>

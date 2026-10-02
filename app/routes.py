@@ -2,7 +2,10 @@ from flask import render_template, request
 from app import app
 
 
-# Matriz de horas semanales recomendadas por nivel + objetivo
+# ============================================================
+# PLANIFICADOR DE ENTRENAMIENTO
+# ============================================================
+
 HORAS_RECOMENDADAS = {
     "principiante": {"recreativo": 3, "salud": 4, "competitivo": 5},
     "intermedio":   {"recreativo": 5, "salud": 6, "competitivo": 8},
@@ -15,29 +18,19 @@ DIAS_SEMANA = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", 
 def calcular_plan(nivel, objetivo, dias_disponibles, horas_por_dia):
     """Calcula el plan de entrenamiento según los datos del usuario."""
 
-    # 1. Horas recomendadas según nivel + objetivo
     horas_recomendadas = HORAS_RECOMENDADAS[nivel][objetivo]
-
-    # 2. Carga máxima permitida por el usuario
     carga_maxima = dias_disponibles * horas_por_dia
-
-    # 3. Horas reales a usar (no más de lo recomendado ni de lo disponible)
     horas_reales = min(horas_recomendadas, carga_maxima)
-
-    # 4. Duración por sesión
     duracion_sesion = round(horas_reales / dias_disponibles, 2)
 
-    # 5. Distribución semanal (intercalando descansos)
-    # Se reparten las sesiones en los días disponibles, dejando días de descanso entre medio
     distribucion = []
-    paso = 7 / dias_disponibles  # Para intercalar los días
+    paso = 7 / dias_disponibles
     indices_sesion = []
     for i in range(dias_disponibles):
         indice = int(round(i * paso)) % 7
         if indice not in indices_sesion:
             indices_sesion.append(indice)
 
-    # Si no se lograron todos los índices, rellenar
     j = 0
     while len(indices_sesion) < dias_disponibles and j < 7:
         if j not in indices_sesion:
@@ -48,19 +41,10 @@ def calcular_plan(nivel, objetivo, dias_disponibles, horas_por_dia):
 
     for i, dia in enumerate(DIAS_SEMANA):
         if i in indices_sesion:
-            distribucion.append({
-                "dia": dia,
-                "entrena": True,
-                "duracion": duracion_sesion,
-            })
+            distribucion.append({"dia": dia, "entrena": True, "duracion": duracion_sesion})
         else:
-            distribucion.append({
-                "dia": dia,
-                "entrena": False,
-                "duracion": 0,
-            })
+            distribucion.append({"dia": dia, "entrena": False, "duracion": 0})
 
-    # 6. Advertencias
     advertencias = []
 
     if carga_maxima < horas_recomendadas:
@@ -90,7 +74,6 @@ def calcular_plan(nivel, objetivo, dias_disponibles, horas_por_dia):
             "mensaje": "Tu plan está bien ajustado a tu nivel y disponibilidad. ✅"
         })
 
-    # 7. Recomendaciones generales
     recomendaciones = [
         "Calienta 5-10 minutos antes de cada sesión.",
         "Bebe agua antes, durante y después del entrenamiento.",
@@ -113,6 +96,113 @@ def calcular_plan(nivel, objetivo, dias_disponibles, horas_por_dia):
     }
 
 
+# ============================================================
+# CALCULADORA DE DIETA Y NUTRICIÓN
+# ============================================================
+
+FACTORES_ACTIVIDAD = {
+    "sedentario": 1.2,
+    "ligero": 1.375,
+    "moderado": 1.55,
+    "intenso": 1.725,
+    "muy_intenso": 1.9,
+}
+
+MACROS_POR_OBJETIVO = {
+    "perder_grasa":   {"proteina": 0.40, "carbos": 0.30, "grasas": 0.30},
+    "mantener":       {"proteina": 0.30, "carbos": 0.40, "grasas": 0.30},
+    "ganar_musculo":  {"proteina": 0.30, "carbos": 0.50, "grasas": 0.20},
+}
+
+SUPLEMENTOS_POR_OBJETIVO = {
+    "perder_grasa": {
+        "costo": 400,
+        "lista": ["Proteína whey (Bs 300)", "Multivitamínico (Bs 100)"],
+    },
+    "mantener": {
+        "costo": 100,
+        "lista": ["Multivitamínico (Bs 100)"],
+    },
+    "ganar_musculo": {
+        "costo": 550,
+        "lista": [
+            "Proteína whey (Bs 300)",
+            "Creatina (Bs 150)",
+            "Multivitamínico (Bs 100)",
+        ],
+    },
+}
+
+
+def calcular_dieta(sexo, edad, peso, altura, nivel_actividad, objetivo):
+    """Calcula calorías, macros y presupuesto mensual en bolivianos."""
+
+    # 1. TMB — Fórmula Mifflin-St Jeor
+    if sexo == "masculino":
+        tmb = (10 * peso) + (6.25 * altura) - (5 * edad) + 5
+    else:
+        tmb = (10 * peso) + (6.25 * altura) - (5 * edad) - 161
+
+    # 2. Calorías diarias totales
+    factor = FACTORES_ACTIVIDAD[nivel_actividad]
+    calorias_diarias = tmb * factor
+
+    # 3. Macronutrientes
+    distribucion = MACROS_POR_OBJETIVO[objetivo]
+    gramos_proteina = round((calorias_diarias * distribucion["proteina"]) / 4)
+    gramos_carbos = round((calorias_diarias * distribucion["carbos"]) / 4)
+    gramos_grasas = round((calorias_diarias * distribucion["grasas"]) / 9)
+
+    # 4. Presupuesto de supermercado (Bs)
+    # Base: Bs 1,200 para 2,000 kcal/día
+    # Ajuste: +Bs 0.50 por cada 100 kcal extra, -Bs 0.40 por cada 100 kcal menos
+    diferencia_kcal = calorias_diarias - 2000
+    if diferencia_kcal >= 0:
+        ajuste = (diferencia_kcal / 100) * 0.50
+    else:
+        ajuste = (diferencia_kcal / 100) * 0.40
+    presupuesto_super = round(1200 + ajuste)
+
+    # 5. Suplementos
+    suplementos = SUPLEMENTOS_POR_OBJETIVO[objetivo]
+
+    # 6. Total
+    total_mensual = presupuesto_super + suplementos["costo"]
+
+    # 7. Recomendaciones
+    recomendaciones = [
+        f"Hidrátate: consume aproximadamente {round(peso * 0.035, 1)}L de agua al día.",
+        f"Consume {gramos_proteina}g de proteína repartidos en 4-5 comidas.",
+        "Prioriza carbohidratos complejos (avena, arroz integral, quinua).",
+        "Incluye grasas saludables: palta, frutos secos, aceite de oliva.",
+        "Come frutas y verduras de temporada (más económicas).",
+    ]
+
+    return {
+        "sexo": sexo,
+        "edad": edad,
+        "peso": peso,
+        "altura": altura,
+        "nivel_actividad": nivel_actividad,
+        "objetivo": objetivo,
+        "tmb": round(tmb),
+        "factor_actividad": factor,
+        "calorias_diarias": round(calorias_diarias),
+        "gramos_proteina": gramos_proteina,
+        "gramos_carbos": gramos_carbos,
+        "gramos_grasas": gramos_grasas,
+        "presupuesto_super": presupuesto_super,
+        "costo_suplementos": suplementos["costo"],
+        "lista_suplementos": suplementos["lista"],
+        "total_mensual": total_mensual,
+        "recomendaciones": recomendaciones,
+    }
+
+
+# ============================================================
+# RUTAS
+# ============================================================
+
 @app.route("/")
 def inicio():
     return render_template("index.html")
@@ -123,13 +213,27 @@ def planificador():
     resultado = None
 
     if request.method == "POST":
-        # Obtener datos del formulario
         nivel = request.form.get("nivel", "principiante")
         objetivo = request.form.get("objetivo", "recreativo")
         dias = int(request.form.get("dias", 3))
         horas = float(request.form.get("horas", 1))
-
-        # Calcular el plan
         resultado = calcular_plan(nivel, objetivo, dias, horas)
 
     return render_template("planificador.html", resultado=resultado)
+
+
+@app.route("/dieta", methods=["GET", "POST"])
+def dieta():
+    resultado = None
+
+    if request.method == "POST":
+        sexo = request.form.get("sexo", "masculino")
+        edad = int(request.form.get("edad", 20))
+        peso = float(request.form.get("peso", 70))
+        altura = float(request.form.get("altura", 170))
+        nivel_actividad = request.form.get("nivel_actividad", "moderado")
+        objetivo = request.form.get("objetivo", "mantener")
+
+        resultado = calcular_dieta(sexo, edad, peso, altura, nivel_actividad, objetivo)
+
+    return render_template("dieta.html", resultado=resultado)
